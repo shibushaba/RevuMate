@@ -361,6 +361,7 @@
         const primaryColor = urlParams.get('color') || '#4CAF50';
         
         // Set CSS custom property for primary color
+        // Updated for localhost n8n instance
         document.documentElement.style.setProperty('--primary-color', primaryColor);
         
         // Update business name
@@ -378,7 +379,7 @@
         
         async function loadAnalyticsData() {
             try {
-                const response = await fetch(`/webhook/client-analytics/${clientId}`);
+                const response = await fetch(`http://localhost:5678/webhook/client-analytics/${clientId}`);
                 const data = await response.json();
                 
                 if (data.error) {

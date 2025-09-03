@@ -484,7 +484,7 @@
         
         async function loadBillingData() {
             try {
-                const response = await fetch('/webhook/billing-management');
+                const response = await fetch('http://localhost:5678/webhook/billing-management');
                 billingData = await response.json();
                 
                 if (billingData.error) {
@@ -571,7 +571,7 @@
                 const invoiceData = Object.fromEntries(formData.entries());
                 
                 try {
-                    const response = await fetch('/webhook/create-invoice', {
+                    const response = await fetch('http://localhost:5678/webhook/create-invoice', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -595,7 +595,7 @@
         
         async function sendInvoice(clientId) {
             try {
-                const response = await fetch('/webhook/send-invoice', {
+                const response = await fetch('http://localhost:5678/webhook/send-invoice', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -619,7 +619,7 @@
             if (!confirm('Mark this invoice as paid?')) return;
             
             try {
-                const response = await fetch('/webhook/mark-paid', {
+                const response = await fetch('http://localhost:5678/webhook/mark-paid', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -643,7 +643,7 @@
             if (!confirm('Send monthly invoices to all active clients?')) return;
             
             try {
-                const response = await fetch('/webhook/send-monthly-invoices', {
+                const response = await fetch('http://localhost:5678/webhook/send-monthly-invoices', {
                     method: 'POST'
                 });
                 
@@ -663,7 +663,7 @@
             if (!confirm('Send payment reminders to clients with overdue payments?')) return;
             
             try {
-                const response = await fetch('/webhook/send-payment-reminders', {
+                const response = await fetch('http://localhost:5678/webhook/send-payment-reminders', {
                     method: 'POST'
                 });
                 

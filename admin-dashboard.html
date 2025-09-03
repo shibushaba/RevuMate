@@ -557,7 +557,7 @@
         
         async function loadDashboardData() {
             try {
-                const response = await fetch('/webhook/admin-dashboard');
+                const response = await fetch('http://localhost:5678/webhook/admin-dashboard');
                 dashboardData = await response.json();
                 
                 if (dashboardData.error) {

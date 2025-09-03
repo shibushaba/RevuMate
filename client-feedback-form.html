@@ -498,7 +498,7 @@
             data.submissionTime = new Date().toISOString();
             
             try {
-                const response = await fetch(`/webhook/client-feedback/${clientId}`, {
+                const response = await fetch(`http://localhost:5678/webhook/client-feedback/${clientId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -531,7 +531,7 @@
         // Track Google review clicks
         document.getElementById('googleReviewBtn').addEventListener('click', () => {
             // Track the click
-            fetch(`/webhook/client-feedback/${clientId}`, {
+            fetch(`http://localhost:5678/webhook/client-feedback/${clientId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

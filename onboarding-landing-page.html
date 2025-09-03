@@ -583,7 +583,8 @@
             <div class="solution-content">
                 <div class="solution-text">
                     <div class="section-badge">The Solution</div>
-                    <h2>Automated Review Collection That Actually Works</h2>
+                    <h1>🚀 RevuMate</h1>
+                    <h2>Collection That Actually Works</h2>
                     <p>Our professional service handles everything for you. From personalized customer outreach to branded feedback forms and real-time analytics - we make review collection completely hands-off.</p>
                     
                     <ul class="solution-features">
@@ -675,6 +676,8 @@
                 
                 <div class="cta-form">
                     <h3>Get Started Today - $100 Setup + $50/Month</h3>
+                    <p style="margin-bottom: 1rem; color: #666;">Contact: shibushabas23@gmail.com | +919746788667</p>
+                    <p style="font-size: 0.9rem; color: #888;">Professional review management service for growing businesses</p>
                     <form id="onboardingForm">
                         <div class="form-grid">
                             <div class="form-group">
@@ -759,7 +762,7 @@
             data.status = 'new_lead';
             
             try {
-                const response = await fetch('/webhook/client-onboarding', {
+                const response = await fetch('http://localhost:5678/webhook/client-onboarding', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

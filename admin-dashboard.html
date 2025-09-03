@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RevuMate Service - Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+        
+        .header-stats {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .header-stat {
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            padding: 15px 25px;
+            border-radius: 10px;
+        }
+        
+        .header-stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .header-stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .overview-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 5px solid #3498db;
+        }
+        
+        .overview-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .overview-card.revenue {
+            border-left-color: #27ae60;
+        }
+        
+        .overview-card.clients {
+            border-left-color: #e74c3c;
+        }
+        
+        .overview-card.reviews {
+            border-left-color: #f39c12;
+        }
+        
+        .overview-card.satisfaction {
+            border-left-color: #9b59b6;
+        }
+        
+        .overview-number {
+            font-size: 3.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .overview-number.revenue {
+            color: #27ae60;
+        }
+        
+        .overview-number.clients {
+            color: #e74c3c;
+        }
+        
+        .overview-number.reviews {
+            color: #f39c12;
+        }
+        
+        .overview-number.satisfaction {
+            color: #9b59b6;
+        }
+        
+        .overview-label {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .overview-change {
+            font-size: 0.9em;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+        
+        .overview-change.positive {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .overview-change.negative {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .dashboard-sections {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .chart-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+        
+        .chart-section h3 {
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 1.6em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+        }
+        
+        .alerts-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        
+        .alerts-header {
+            background: #e74c3c;
+            color: white;
+            padding: 20px 25px;
+        }
+        
+        .alerts-header h3 {
+            font-size: 1.4em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .alert-item {
+            padding: 20px 25px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .alert-item:last-child {
+            border-bottom: none;
+        }
+        
+        .alert-icon {
+            font-size: 1.5em;
+        }
+        
+        .alert-content {
+            flex: 1;
+        }
+        
+        .alert-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .alert-description {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .clients-table-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        
+        .table-header {
+            background: #34495e;
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-header h3 {
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .filter-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .filter-controls select,
+        .filter-controls input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .clients-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .clients-table th,
+        .clients-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .clients-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .clients-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-badge.active {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-badge.inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-badge.trial {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-right: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .action-btn.view {
+            background: #3498db;
+            color: white;
+        }
+        
+        .action-btn.view:hover {
+            background: #2980b9;
+        }
+        
+        .action-btn.edit {
+            background: #f39c12;
+            color: white;
+        }
+        
+        .action-btn.edit:hover {
+            background: #e67e22;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .refresh-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .refresh-btn:hover {
+            background: #2980b9;
+        }
+        
+        @media (max-width: 1200px) {
+            .dashboard-sections {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .header-stats {
+                justify-content: center;
+            }
+            
+            .overview-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+            
+            .overview-number {
+                font-size: 2.8em;
+            }
+            
+            .clients-table {
+                font-size: 14px;
+            }
+            
+            .clients-table th,
+            .clients-table td {
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div>
+                <h1>🚀 RevuMate Service Dashboard</h1>
+                <p>Master control center for your review management service</p>
+            </div>
+            <div class="header-stats">
+                <div class="header-stat">
+                    <div class="header-stat-number" id="headerMRR">$0</div>
+                    <div class="header-stat-label">Monthly Revenue</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-number" id="headerClients">0</div>
+                    <div class="header-stat-label">Active Clients</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-number" id="headerUptime">99.9%</div>
+                    <div class="header-stat-label">Service Uptime</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="overview-grid">
+            <div class="overview-card revenue">
+                <div class="overview-number revenue" id="totalRevenue">$0</div>
+                <div class="overview-label">Total Revenue</div>
+                <div class="overview-change positive" id="revenueChange">+0% this month</div>
+            </div>
+            
+            <div class="overview-card clients">
+                <div class="overview-number clients" id="totalClients">0</div>
+                <div class="overview-label">Total Clients</div>
+                <div class="overview-change positive" id="clientsChange">+0 new this month</div>
+            </div>
+            
+            <div class="overview-card reviews">
+                <div class="overview-number reviews" id="totalReviews">0</div>
+                <div class="overview-label">Reviews Collected</div>
+                <div class="overview-change positive" id="reviewsChange">+0% this month</div>
+            </div>
+            
+            <div class="overview-card satisfaction">
+                <div class="overview-number satisfaction" id="avgSatisfaction">0.0</div>
+                <div class="overview-label">Avg. Client Rating</div>
+                <div class="overview-change positive" id="satisfactionChange">+0.0 this month</div>
+            </div>
+        </div>
+        
+        <div class="dashboard-sections">
+            <div class="chart-section">
+                <h3>📈 Revenue & Growth Trends</h3>
+                <div class="chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="alerts-section">
+                <div class="alerts-header">
+                    <h3>🚨 Service Alerts</h3>
+                </div>
+                <div id="alertsList">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>Loading alerts...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="clients-table-section">
+            <div class="table-header">
+                <h3>👥 Client Management</h3>
+                <div class="filter-controls">
+                    <select id="statusFilter">
+                        <option value="all">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="trial">Trial</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                    <input type="text" id="searchFilter" placeholder="Search clients...">
+                    <button class="refresh-btn" onclick="loadDashboardData()">
+                        🔄 Refresh
+                    </button>
+                </div>
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="clients-table">
+                    <thead>
+                        <tr>
+                            <th>Business Name</th>
+                            <th>Contact</th>
+                            <th>Status</th>
+                            <th>Monthly Fee</th>
+                            <th>Reviews</th>
+                            <th>Avg Rating</th>
+                            <th>Last Activity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clientsTableBody">
+                        <tr>
+                            <td colspan="8">
+                                <div class="loading">
+                                    <div class="spinner"></div>
+                                    <p>Loading client data...</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let revenueChart;
+        let dashboardData = {};
+        
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboardData();
+            setupFilters();
+            
+            // Auto-refresh every 5 minutes
+            setInterval(loadDashboardData, 5 * 60 * 1000);
+        });
+        
+        async function loadDashboardData() {
+            try {
+                const response = await fetch('/webhook/admin-dashboard');
+                dashboardData = await response.json();
+                
+                if (dashboardData.error) {
+                    console.error('Dashboard error:', dashboardData.error);
+                    showNoData();
+                    return;
+                }
+                
+                renderOverviewStats(dashboardData.overview);
+                renderRevenueChart(dashboardData.revenue);
+                renderAlerts(dashboardData.alerts);
+                renderClientsTable(dashboardData.clients);
+                
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                showNoData();
+            }
+        }
+        
+        function renderOverviewStats(overview) {
+            // Header stats
+            document.getElementById('headerMRR').textContent = `$${overview.monthlyRevenue || 0}`;
+            document.getElementById('headerClients').textContent = overview.activeClients || 0;
+            document.getElementById('headerUptime').textContent = `${overview.uptime || 99.9}%`;
+            
+            // Overview cards
+            document.getElementById('totalRevenue').textContent = `$${overview.totalRevenue || 0}`;
+            document.getElementById('totalClients').textContent = overview.totalClients || 0;
+            document.getElementById('totalReviews').textContent = overview.totalReviews || 0;
+            document.getElementById('avgSatisfaction').textContent = (overview.avgSatisfaction || 0).toFixed(1);
+            
+            // Changes
+            document.getElementById('revenueChange').textContent = `${overview.revenueChange >= 0 ? '+' : ''}${overview.revenueChange || 0}% this month`;
+            document.getElementById('clientsChange').textContent = `+${overview.newClients || 0} new this month`;
+            document.getElementById('reviewsChange').textContent = `${overview.reviewsChange >= 0 ? '+' : ''}${overview.reviewsChange || 0}% this month`;
+            document.getElementById('satisfactionChange').textContent = `${overview.satisfactionChange >= 0 ? '+' : ''}${(overview.satisfactionChange || 0).toFixed(1)} this month`;
+            
+            // Update change indicators
+            updateChangeIndicator('revenueChange', overview.revenueChange);
+            updateChangeIndicator('reviewsChange', overview.reviewsChange);
+            updateChangeIndicator('satisfactionChange', overview.satisfactionChange);
+        }
+        
+        function updateChangeIndicator(elementId, value) {
+            const element = document.getElementById(elementId);
+            element.className = `overview-change ${value >= 0 ? 'positive' : 'negative'}`;
+        }
+        
+        function renderRevenueChart(revenueData) {
+            const ctx = document.getElementById('revenueChart').getContext('2d');
+            if (revenueChart) revenueChart.destroy();
+            
+            revenueChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: revenueData.labels || [],
+                    datasets: [
+                        {
+                            label: 'Monthly Revenue',
+                            data: revenueData.monthlyRevenue || [],
+                            borderColor: '#27ae60',
+                            backgroundColor: '#27ae6020',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'New Clients',
+                            data: revenueData.newClients || [],
+                            borderColor: '#e74c3c',
+                            backgroundColor: '#e74c3c20',
+                            borderWidth: 3,
+                            fill: false,
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: {
+                                display: true,
+                                text: 'Revenue ($)'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: 'New Clients'
+                            },
+                            grid: {
+                                drawOnChartArea: false,
+                            },
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderAlerts(alerts) {
+            const alertsList = document.getElementById('alertsList');
+            
+            if (!alerts || alerts.length === 0) {
+                alertsList.innerHTML = `
+                    <div class="alert-item">
+                        <div class="alert-icon">✅</div>
+                        <div class="alert-content">
+                            <div class="alert-title">All Systems Operational</div>
+                            <div class="alert-description">No alerts at this time</div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            const alertsHTML = alerts.map(alert => `
+                <div class="alert-item">
+                    <div class="alert-icon">${getAlertIcon(alert.type)}</div>
+                    <div class="alert-content">
+                        <div class="alert-title">${alert.title}</div>
+                        <div class="alert-description">${alert.description}</div>
+                    </div>
+                </div>
+            `).join('');
+            
+            alertsList.innerHTML = alertsHTML;
+        }
+        
+        function getAlertIcon(type) {
+            const icons = {
+                'warning': '⚠️',
+                'error': '❌',
+                'info': 'ℹ️',
+                'success': '✅'
+            };
+            return icons[type] || 'ℹ️';
+        }
+        
+        function renderClientsTable(clients) {
+            const tbody = document.getElementById('clientsTableBody');
+            
+            if (!clients || clients.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" style="text-align: center; padding: 50px;">
+                            <h3>No clients yet</h3>
+                            <p>Clients will appear here once they sign up for your service.</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            const clientsHTML = clients.map(client => `
+                <tr>
+                    <td><strong>${client.businessName}</strong></td>
+                    <td>
+                        <div>${client.contactName}</div>
+                        <div style="font-size: 0.9em; color: #666;">${client.email}</div>
+                    </td>
+                    <td><span class="status-badge ${client.status}">${client.status.toUpperCase()}</span></td>
+                    <td>$${client.monthlyFee}</td>
+                    <td>${client.totalReviews || 0}</td>
+                    <td>${client.avgRating ? client.avgRating.toFixed(1) : '0.0'} ⭐</td>
+                    <td>${formatDate(client.lastActivity)}</td>
+                    <td>
+                        <button class="action-btn view" onclick="viewClient('${client.clientId}')">View</button>
+                        <button class="action-btn edit" onclick="editClient('${client.clientId}')">Edit</button>
+                    </td>
+                </tr>
+            `).join('');
+            
+            tbody.innerHTML = clientsHTML;
+        }
+        
+        function setupFilters() {
+            const statusFilter = document.getElementById('statusFilter');
+            const searchFilter = document.getElementById('searchFilter');
+            
+            statusFilter.addEventListener('change', filterClients);
+            searchFilter.addEventListener('input', filterClients);
+        }
+        
+        function filterClients() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const searchTerm = document.getElementById('searchFilter').value.toLowerCase();
+            
+            if (!dashboardData.clients) return;
+            
+            let filteredClients = dashboardData.clients;
+            
+            if (statusFilter !== 'all') {
+                filteredClients = filteredClients.filter(client => client.status === statusFilter);
+            }
+            
+            if (searchTerm) {
+                filteredClients = filteredClients.filter(client => 
+                    client.businessName.toLowerCase().includes(searchTerm) ||
+                    client.contactName.toLowerCase().includes(searchTerm) ||
+                    client.email.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            renderClientsTable(filteredClients);
+        }
+        
+        function viewClient(clientId) {
+            // Open client analytics dashboard in new tab
+            const client = dashboardData.clients.find(c => c.clientId === clientId);
+            if (client) {
+                const url = `client-analytics-dashboard.html?clientId=${clientId}&business=${encodeURIComponent(client.businessName)}&color=${encodeURIComponent(client.brandColor || '#4CAF50')}`;
+                window.open(url, '_blank');
+            }
+        }
+        
+        function editClient(clientId) {
+            // This would open a client editing modal or page
+            alert(`Edit client functionality would be implemented here for client: ${clientId}`);
+        }
+        
+        function formatDate(dateString) {
+            if (!dateString) return 'Never';
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 1) return 'Today';
+            if (diffDays === 2) return 'Yesterday';
+            if (diffDays <= 7) return `${diffDays} days ago`;
+            
+            return date.toLocaleDateString();
+        }
+        
+        function showNoData() {
+            document.getElementById('clientsTableBody').innerHTML = `
+                <tr>
+                    <td colspan="8" style="text-align: center; padding: 50px;">
+                        <h3>Unable to load data</h3>
+                        <p>Please check your connection and try refreshing the page.</p>
+                    </td>
+                </tr>
+            `;
+        }
+        
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (revenueChart) revenueChart.destroy();
+        });
+    </script>
+</body>
+</html>

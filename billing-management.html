@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RevuMate Service - Billing Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .billing-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .billing-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .billing-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .billing-card.revenue {
+            border-left: 5px solid #27ae60;
+        }
+        
+        .billing-card.pending {
+            border-left: 5px solid #f39c12;
+        }
+        
+        .billing-card.overdue {
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .billing-card.collected {
+            border-left: 5px solid #3498db;
+        }
+        
+        .billing-number {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .billing-number.revenue {
+            color: #27ae60;
+        }
+        
+        .billing-number.pending {
+            color: #f39c12;
+        }
+        
+        .billing-number.overdue {
+            color: #e74c3c;
+        }
+        
+        .billing-number.collected {
+            color: #3498db;
+        }
+        
+        .billing-label {
+            font-size: 1.1em;
+            color: #666;
+        }
+        
+        .billing-sections {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .billing-table-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        
+        .table-header {
+            background: #34495e;
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .table-header h3 {
+            font-size: 1.5em;
+        }
+        
+        .billing-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .billing-table th,
+        .billing-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .billing-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .billing-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-badge.paid {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-badge.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-badge.overdue {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-right: 5px;
+            transition: background 0.3s ease;
+        }
+        
+        .action-btn.send {
+            background: #3498db;
+            color: white;
+        }
+        
+        .action-btn.send:hover {
+            background: #2980b9;
+        }
+        
+        .action-btn.mark-paid {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .action-btn.mark-paid:hover {
+            background: #229954;
+        }
+        
+        .quick-actions {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            padding: 30px;
+        }
+        
+        .quick-actions h3 {
+            margin-bottom: 25px;
+            color: #333;
+            font-size: 1.4em;
+        }
+        
+        .action-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .action-item:last-child {
+            border-bottom: none;
+        }
+        
+        .action-description {
+            flex: 1;
+        }
+        
+        .action-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .action-subtitle {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .primary-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s ease;
+        }
+        
+        .primary-btn:hover {
+            background: #2980b9;
+        }
+        
+        .invoice-form {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            padding: 30px;
+            margin-top: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        @media (max-width: 1200px) {
+            .billing-sections {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .billing-table {
+                font-size: 14px;
+            }
+            
+            .billing-table th,
+            .billing-table td {
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div>
+                <h1>💰 Billing Management</h1>
+                <p>Manage client subscriptions and payments</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="billing-overview">
+            <div class="billing-card revenue">
+                <div class="billing-number revenue" id="monthlyRevenue">$0</div>
+                <div class="billing-label">Monthly Revenue</div>
+            </div>
+            
+            <div class="billing-card pending">
+                <div class="billing-number pending" id="pendingAmount">$0</div>
+                <div class="billing-label">Pending Payments</div>
+            </div>
+            
+            <div class="billing-card overdue">
+                <div class="billing-number overdue" id="overdueAmount">$0</div>
+                <div class="billing-label">Overdue Payments</div>
+            </div>
+            
+            <div class="billing-card collected">
+                <div class="billing-number collected" id="collectedAmount">$0</div>
+                <div class="billing-label">Collected This Month</div>
+            </div>
+        </div>
+        
+        <div class="billing-sections">
+            <div class="billing-table-section">
+                <div class="table-header">
+                    <h3>📋 Client Billing Status</h3>
+                    <button class="primary-btn" onclick="refreshBilling()">🔄 Refresh</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="billing-table">
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Monthly Fee</th>
+                                <th>Last Payment</th>
+                                <th>Next Due</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="billingTableBody">
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 50px;">
+                                    Loading billing data...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="quick-actions">
+                <h3>⚡ Quick Actions</h3>
+                
+                <div class="action-item">
+                    <div class="action-description">
+                        <div class="action-title">Send Monthly Invoices</div>
+                        <div class="action-subtitle">Send invoices to all active clients</div>
+                    </div>
+                    <button class="primary-btn" onclick="sendMonthlyInvoices()">Send All</button>
+                </div>
+                
+                <div class="action-item">
+                    <div class="action-description">
+                        <div class="action-title">Payment Reminders</div>
+                        <div class="action-subtitle">Send reminders for overdue payments</div>
+                    </div>
+                    <button class="primary-btn" onclick="sendPaymentReminders()">Send Reminders</button>
+                </div>
+                
+                <div class="action-item">
+                    <div class="action-description">
+                        <div class="action-title">Generate Report</div>
+                        <div class="action-subtitle">Monthly billing and revenue report</div>
+                    </div>
+                    <button class="primary-btn" onclick="generateReport()">Generate</button>
+                </div>
+                
+                <div class="action-item">
+                    <div class="action-description">
+                        <div class="action-title">Export Data</div>
+                        <div class="action-subtitle">Export billing data to CSV</div>
+                    </div>
+                    <button class="primary-btn" onclick="exportBillingData()">Export</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="invoice-form">
+            <h3>📄 Create Custom Invoice</h3>
+            <form id="invoiceForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="clientSelect">Select Client</label>
+                        <select id="clientSelect" required>
+                            <option value="">Choose a client...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="invoiceAmount">Amount ($)</label>
+                        <input type="number" id="invoiceAmount" step="0.01" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="invoiceType">Invoice Type</label>
+                        <select id="invoiceType" required>
+                            <option value="setup">Setup Fee</option>
+                            <option value="monthly">Monthly Service</option>
+                            <option value="custom">Custom Service</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dueDate">Due Date</label>
+                        <input type="date" id="dueDate" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="invoiceDescription">Description</label>
+                    <textarea id="invoiceDescription" rows="3" placeholder="Invoice description..."></textarea>
+                </div>
+                
+                <button type="submit" class="primary-btn">Create & Send Invoice</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let billingData = {};
+        
+        // Initialize billing management
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBillingData();
+            setupInvoiceForm();
+        });
+        
+        async function loadBillingData() {
+            try {
+                const response = await fetch('/webhook/billing-management');
+                billingData = await response.json();
+                
+                if (billingData.error) {
+                    console.error('Billing error:', billingData.error);
+                    showNoBillingData();
+                    return;
+                }
+                
+                renderBillingOverview(billingData.overview);
+                renderBillingTable(billingData.clients);
+                populateClientSelect(billingData.clients);
+                
+            } catch (error) {
+                console.error('Error loading billing data:', error);
+                showNoBillingData();
+            }
+        }
+        
+        function renderBillingOverview(overview) {
+            document.getElementById('monthlyRevenue').textContent = `$${overview.monthlyRevenue || 0}`;
+            document.getElementById('pendingAmount').textContent = `$${overview.pendingAmount || 0}`;
+            document.getElementById('overdueAmount').textContent = `$${overview.overdueAmount || 0}`;
+            document.getElementById('collectedAmount').textContent = `$${overview.collectedAmount || 0}`;
+        }
+        
+        function renderBillingTable(clients) {
+            const tbody = document.getElementById('billingTableBody');
+            
+            if (!clients || clients.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 50px;">
+                            <h3>No billing data available</h3>
+                            <p>Client billing information will appear here once clients are added.</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            const clientsHTML = clients.map(client => `
+                <tr>
+                    <td><strong>${client.businessName}</strong></td>
+                    <td>$${client.monthlyFee}</td>
+                    <td>${formatDate(client.lastPayment)}</td>
+                    <td>${formatDate(client.nextDue)}</td>
+                    <td><span class="status-badge ${client.paymentStatus}">${client.paymentStatus.toUpperCase()}</span></td>
+                    <td>
+                        <button class="action-btn send" onclick="sendInvoice('${client.clientId}')">Send Invoice</button>
+                        <button class="action-btn mark-paid" onclick="markPaid('${client.clientId}')">Mark Paid</button>
+                    </td>
+                </tr>
+            `).join('');
+            
+            tbody.innerHTML = clientsHTML;
+        }
+        
+        function populateClientSelect(clients) {
+            const select = document.getElementById('clientSelect');
+            
+            if (!clients || clients.length === 0) {
+                select.innerHTML = '<option value="">No clients available</option>';
+                return;
+            }
+            
+            const options = clients.map(client => 
+                `<option value="${client.clientId}">${client.businessName}</option>`
+            ).join('');
+            
+            select.innerHTML = '<option value="">Choose a client...</option>' + options;
+        }
+        
+        function setupInvoiceForm() {
+            const form = document.getElementById('invoiceForm');
+            const today = new Date();
+            const nextWeek = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+            
+            document.getElementById('dueDate').value = nextWeek.toISOString().split('T')[0];
+            
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const formData = new FormData(form);
+                const invoiceData = Object.fromEntries(formData.entries());
+                
+                try {
+                    const response = await fetch('/webhook/create-invoice', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(invoiceData)
+                    });
+                    
+                    if (response.ok) {
+                        alert('Invoice created and sent successfully!');
+                        form.reset();
+                        loadBillingData(); // Refresh data
+                    } else {
+                        throw new Error('Failed to create invoice');
+                    }
+                } catch (error) {
+                    console.error('Error creating invoice:', error);
+                    alert('Error creating invoice. Please try again.');
+                }
+            });
+        }
+        
+        async function sendInvoice(clientId) {
+            try {
+                const response = await fetch('/webhook/send-invoice', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ clientId })
+                });
+                
+                if (response.ok) {
+                    alert('Invoice sent successfully!');
+                    loadBillingData();
+                } else {
+                    throw new Error('Failed to send invoice');
+                }
+            } catch (error) {
+                console.error('Error sending invoice:', error);
+                alert('Error sending invoice. Please try again.');
+            }
+        }
+        
+        async function markPaid(clientId) {
+            if (!confirm('Mark this invoice as paid?')) return;
+            
+            try {
+                const response = await fetch('/webhook/mark-paid', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ clientId })
+                });
+                
+                if (response.ok) {
+                    alert('Payment marked as received!');
+                    loadBillingData();
+                } else {
+                    throw new Error('Failed to mark as paid');
+                }
+            } catch (error) {
+                console.error('Error marking as paid:', error);
+                alert('Error updating payment status. Please try again.');
+            }
+        }
+        
+        async function sendMonthlyInvoices() {
+            if (!confirm('Send monthly invoices to all active clients?')) return;
+            
+            try {
+                const response = await fetch('/webhook/send-monthly-invoices', {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    alert('Monthly invoices sent to all active clients!');
+                    loadBillingData();
+                } else {
+                    throw new Error('Failed to send monthly invoices');
+                }
+            } catch (error) {
+                console.error('Error sending monthly invoices:', error);
+                alert('Error sending invoices. Please try again.');
+            }
+        }
+        
+        async function sendPaymentReminders() {
+            if (!confirm('Send payment reminders to clients with overdue payments?')) return;
+            
+            try {
+                const response = await fetch('/webhook/send-payment-reminders', {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    alert('Payment reminders sent!');
+                    loadBillingData();
+                } else {
+                    throw new Error('Failed to send reminders');
+                }
+            } catch (error) {
+                console.error('Error sending reminders:', error);
+                alert('Error sending reminders. Please try again.');
+            }
+        }
+        
+        function generateReport() {
+            // Generate and download monthly billing report
+            const reportData = generateReportData();
+            const blob = new Blob([reportData], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `billing_report_${new Date().toISOString().split('T')[0]}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+        
+        function exportBillingData() {
+            // Export billing data to CSV
+            const csvData = generateCSVData();
+            const blob = new Blob([csvData], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `billing_data_${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+        
+        function generateReportData() {
+            const today = new Date().toLocaleDateString();
+            return `
+                <html>
+                <head><title>Billing Report - ${today}</title></head>
+                <body>
+                    <h1>RevuMate Service - Billing Report</h1>
+                    <p>Generated: ${today}</p>
+                    <h2>Summary</h2>
+                    <p>Monthly Revenue: $${billingData.overview?.monthlyRevenue || 0}</p>
+                    <p>Pending Payments: $${billingData.overview?.pendingAmount || 0}</p>
+                    <p>Overdue Payments: $${billingData.overview?.overdueAmount || 0}</p>
+                    <p>Collected This Month: $${billingData.overview?.collectedAmount || 0}</p>
+                </body>
+                </html>
+            `;
+        }
+        
+        function generateCSVData() {
+            const headers = 'Client,Monthly Fee,Last Payment,Next Due,Status\n';
+            const rows = (billingData.clients || []).map(client => 
+                `"${client.businessName}","$${client.monthlyFee}","${formatDate(client.lastPayment)}","${formatDate(client.nextDue)}","${client.paymentStatus}"`
+            ).join('\n');
+            
+            return headers + rows;
+        }
+        
+        function refreshBilling() {
+            loadBillingData();
+        }
+        
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString();
+        }
+        
+        function showNoBillingData() {
+            document.getElementById('billingTableBody').innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 50px;">
+                        <h3>Unable to load billing data</h3>
+                        <p>Please check your connection and try refreshing the page.</p>
+                    </td>
+                </tr>
+            `;
+        }
+    </script>
+</body>
+</html>

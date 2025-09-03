@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Your Experience - {{businessName}}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color, #4CAF50) 0%, #45a049 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: var(--primary-color, #4CAF50);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><defs><radialGradient id="a" cx="50%" cy="0%" r="100%"><stop offset="0%" stop-color="white" stop-opacity="0.1"/><stop offset="100%" stop-color="white" stop-opacity="0"/></radialGradient></defs><rect width="100" height="20" fill="url(%23a)"/></svg>');
+        }
+        
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .business-info {
+            background: #f8f9fa;
+            padding: 25px 30px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .business-name {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .business-description {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .form-content {
+            padding: 40px 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 30px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        .rating-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .star {
+            font-size: 3em;
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+        
+        .star:hover,
+        .star.active {
+            color: #ffd700;
+            transform: scale(1.2);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+        
+        .rating-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        textarea,
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        textarea:focus,
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary-color, #4CAF50);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            transform: scale(1.3);
+            accent-color: var(--primary-color, #4CAF50);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-color, #4CAF50) 0%, #45a049 100%);
+            color: white;
+            padding: 18px 50px;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.4);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .google-review-section {
+            background: linear-gradient(135deg, #4285f4 0%, #3367d6 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .google-review-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>') repeat;
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .google-review-section h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .google-review-section p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .google-btn {
+            background: white;
+            color: #4285f4;
+            padding: 15px 35px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .google-btn:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .success-message h3 {
+            font-size: 2.2em;
+            margin-bottom: 15px;
+        }
+        
+        .success-message p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-color, #4CAF50);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .rating-container {
+                gap: 10px;
+            }
+            
+            .star {
+                font-size: 2.5em;
+            }
+            
+            .form-content {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌟 Your Experience Matters</h1>
+            <p>Help us serve you and others better</p>
+        </div>
+        
+        <div class="business-info">
+            <div class="business-name" id="businessName">Loading...</div>
+            <div class="business-description" id="businessDescription">We value your feedback and strive to provide the best service possible.</div>
+        </div>
+        
+        <div class="form-content">
+            <form id="feedbackForm">
+                <input type="hidden" id="clientId" name="clientId">
+                <input type="hidden" id="customerName" name="customerName">
+                <input type="hidden" id="customerEmail" name="customerEmail">
+                
+                <div class="form-group">
+                    <label>How would you rate your overall experience?</label>
+                    <div class="rating-container">
+                        <span class="star" data-rating="1">⭐</span>
+                        <span class="star" data-rating="2">⭐</span>
+                        <span class="star" data-rating="3">⭐</span>
+                        <span class="star" data-rating="4">⭐</span>
+                        <span class="star" data-rating="5">⭐</span>
+                    </div>
+                    <div class="rating-labels">
+                        <span>Poor</span>
+                        <span>Fair</span>
+                        <span>Good</span>
+                        <span>Very Good</span>
+                        <span>Excellent</span>
+                    </div>
+                    <input type="hidden" id="rating" name="rating" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="feedback">Tell us about your experience:</label>
+                    <textarea id="feedback" name="feedback" placeholder="What did you like most? How was our service? Share your thoughts..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="suggestions">How can we improve? (Optional)</label>
+                    <textarea id="suggestions" name="suggestions" placeholder="Any suggestions to make your experience even better?"></textarea>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="wouldRecommend" name="wouldRecommend" value="yes">
+                    <label for="wouldRecommend">I would recommend this business to others</label>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contactPreference">How would you like us to follow up? (Optional)</label>
+                    <select id="contactPreference" name="contactPreference">
+                        <option value="none">No follow-up needed</option>
+                        <option value="email">Email</option>
+                        <option value="phone">Phone call</option>
+                        <option value="sms">Text message</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    Submit My Feedback
+                </button>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Submitting your feedback...</p>
+                </div>
+            </form>
+            
+            <div class="google-review-section">
+                <h3>🚀 Love our service? Spread the word!</h3>
+                <p>Your Google review helps other customers discover us and supports our business growth</p>
+                <a href="#" class="google-btn" id="googleReviewBtn" target="_blank">
+                    📝 Leave a Google Review
+                </a>
+            </div>
+            
+            <div id="successMessage" class="success-message">
+                <h3>✅ Thank You!</h3>
+                <p>Your feedback has been submitted successfully. We truly appreciate you taking the time to share your experience with us!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const businessName = urlParams.get('business') || 'Our Business';
+        const customerName = urlParams.get('customer') || '';
+        const customerEmail = urlParams.get('email') || '';
+        const clientId = urlParams.get('clientId') || '';
+        const googleBusinessUrl = urlParams.get('googleUrl') || 'https://g.page/r/YOUR_GOOGLE_BUSINESS_ID/review';
+        const primaryColor = urlParams.get('color') || '#4CAF50';
+        
+        // Set CSS custom property for primary color
+        document.documentElement.style.setProperty('--primary-color', primaryColor);
+        
+        // Populate form data
+        document.getElementById('businessName').textContent = businessName;
+        document.getElementById('clientId').value = clientId;
+        document.getElementById('customerName').value = customerName;
+        document.getElementById('customerEmail').value = customerEmail;
+        document.getElementById('googleReviewBtn').href = googleBusinessUrl;
+        
+        // Update page title
+        document.title = `Share Your Experience - ${businessName}`;
+        
+        // Star rating functionality
+        const stars = document.querySelectorAll('.star');
+        const ratingInput = document.getElementById('rating');
+        
+        stars.forEach((star, index) => {
+            star.addEventListener('click', () => {
+                const rating = index + 1;
+                ratingInput.value = rating;
+                
+                stars.forEach((s, i) => {
+                    if (i < rating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+            
+            star.addEventListener('mouseover', () => {
+                stars.forEach((s, i) => {
+                    if (i <= index) {
+                        s.style.color = '#ffd700';
+                        s.style.transform = 'scale(1.2)';
+                    } else {
+                        s.style.color = '#ddd';
+                        s.style.transform = 'scale(1)';
+                    }
+                });
+            });
+        });
+        
+        document.querySelector('.rating-container').addEventListener('mouseleave', () => {
+            const currentRating = parseInt(ratingInput.value) || 0;
+            stars.forEach((s, i) => {
+                if (i < currentRating) {
+                    s.style.color = '#ffd700';
+                    s.style.transform = 'scale(1.2)';
+                } else {
+                    s.style.color = '#ddd';
+                    s.style.transform = 'scale(1)';
+                }
+            });
+        });
+        
+        // Form submission
+        document.getElementById('feedbackForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            const form = document.getElementById('feedbackForm');
+            
+            // Show loading state
+            submitBtn.style.display = 'none';
+            loading.style.display = 'block';
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Add additional data
+            data.ipAddress = await getClientIP();
+            data.userAgent = navigator.userAgent;
+            data.submissionTime = new Date().toISOString();
+            
+            try {
+                const response = await fetch(`/webhook/client-feedback/${clientId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    form.style.display = 'none';
+                    loading.style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                    
+                    // Scroll to success message
+                    document.getElementById('successMessage').scrollIntoView({ 
+                        behavior: 'smooth' 
+                    });
+                } else {
+                    throw new Error('Submission failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('There was an error submitting your feedback. Please try again or contact us directly.');
+                
+                // Reset form state
+                submitBtn.style.display = 'block';
+                loading.style.display = 'none';
+            }
+        });
+        
+        // Track Google review clicks
+        document.getElementById('googleReviewBtn').addEventListener('click', () => {
+            // Track the click
+            fetch(`/webhook/client-feedback/${clientId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    clientId: clientId,
+                    customerName: customerName,
+                    customerEmail: customerEmail,
+                    googleReviewClicked: 'true',
+                    action: 'google_review_click',
+                    timestamp: new Date().toISOString()
+                })
+            }).catch(console.error);
+        });
+        
+        // Get client IP address
+        async function getClientIP() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                return 'unknown';
+            }
+        }
+        
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animate form elements on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe form groups
+            document.querySelectorAll('.form-group').forEach(group => {
+                group.style.opacity = '0';
+                group.style.transform = 'translateY(20px)';
+                group.style.transition = 'all 0.6s ease';
+                observer.observe(group);
+            });
+        });
+    </script>
+</body>
+</html>

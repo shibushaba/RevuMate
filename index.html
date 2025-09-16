@@ -1,452 +1,1095 @@
 <!DOCTYPE html>
-<html lang="zxx">
-
-
-<!-- Mirrored from miller.bslthemes.com/pixy-demo/home-4.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 09 Aug 2025 10:33:32 GMT -->
+<html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Revumate - Transform Customer Feedback into Business Growth</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <!-- grid css -->
-    <link rel="stylesheet" href="css/plugins/bootstrap-grid.css">
-    <!-- font awesome css -->
-    <link rel="stylesheet" href="css/plugins/fontawesome.min.css">
-    <!-- swiper css -->
-    <link rel="stylesheet" href="css/plugins/swiper.min.css">
-    <!-- okai css -->
-    <link rel="stylesheet" href="css/style-stylish.css">
-    <!-- page title -->
-    <title>Styke</title>
+        :root {
+            --primary-black: #000000;
+            --soft-black: #1a1a1a;
+            --dark-gray: #333333;
+            --medium-gray: #666666;
+            --light-gray: #e5e5e5;
+            --off-white: #f8f8f8;
+            --pure-white: #ffffff;
+            --accent: #000000;
+        }
 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: var(--primary-black);
+            overflow-x: hidden;
+            background: var(--pure-white);
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        nav.scrolled {
+            padding: 15px 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, var(--primary-black) 0%, var(--dark-gray) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-gray);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-black);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-black);
+        }
+
+        .cta-button {
+            background: var(--primary-black);
+            color: var(--pure-white);
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 140px 40px 80px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--pure-white) 0%, var(--off-white) 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-50px, -50px) rotate(5deg); }
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(36px, 5vw, 56px);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            color: var(--primary-black);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero-content .highlight {
+            background: linear-gradient(135deg, var(--primary-black) 0%, var(--medium-gray) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            animation: shimmer 3s ease infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            color: var(--medium-gray);
+            margin-bottom: 32px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .secondary-button {
+            background: transparent;
+            color: var(--primary-black);
+            border: 2px solid var(--primary-black);
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .secondary-button:hover {
+            background: var(--primary-black);
+            color: var(--pure-white);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-visual {
+            position: relative;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .dashboard-preview {
+            background: var(--pure-white);
+            border-radius: 20px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+            padding: 30px;
+            position: relative;
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.3s ease;
+        }
+
+        .dashboard-preview:hover {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+
+        .dashboard-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--light-gray);
+        }
+
+        .dot:first-child { background: #ff5f56; }
+        .dot:nth-child(2) { background: #ffbd2e; }
+        .dot:nth-child(3) { background: #27c93f; }
+
+        .dashboard-content {
+            background: var(--off-white);
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 300px;
+        }
+
+        .metric-card {
+            background: var(--pure-white);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-black);
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: var(--medium-gray);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 40px;
+            background: var(--pure-white);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 80px;
+        }
+
+        .section-header h2 {
+            font-size: clamp(32px, 4vw, 48px);
+            font-weight: 900;
+            margin-bottom: 20px;
+            color: var(--primary-black);
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: var(--medium-gray);
+            line-height: 1.6;
+        }
+
+        .features-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: var(--off-white);
+            padding: 40px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-black), var(--medium-gray));
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            background: var(--pure-white);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-black);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: var(--pure-white);
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--primary-black);
+        }
+
+        .feature-card p {
+            color: var(--medium-gray);
+            line-height: 1.6;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 100px 40px;
+            background: linear-gradient(180deg, var(--off-white) 0%, var(--pure-white) 100%);
+        }
+
+        .steps-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+            padding: 40px 20px;
+            background: var(--pure-white);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--primary-black);
+            color: var(--pure-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--primary-black);
+        }
+
+        .step p {
+            color: var(--medium-gray);
+            line-height: 1.6;
+        }
+
+        /* Admin Dashboard Section */
+        .admin-section {
+            padding: 100px 40px;
+            background: var(--pure-white);
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .admin-content h2 {
+            font-size: clamp(32px, 4vw, 42px);
+            font-weight: 900;
+            margin-bottom: 24px;
+            color: var(--primary-black);
+        }
+
+        .admin-features {
+            margin-top: 30px;
+        }
+
+        .admin-feature {
+            display: flex;
+            align-items: start;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--off-white);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .admin-feature:hover {
+            background: var(--light-gray);
+            transform: translateX(10px);
+        }
+
+        .check-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--primary-black);
+            color: var(--pure-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+
+        .admin-visual {
+            background: var(--off-white);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-container {
+            background: var(--pure-white);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .chart-bar {
+            height: 20px;
+            background: linear-gradient(90deg, var(--primary-black), var(--medium-gray));
+            border-radius: 10px;
+            margin: 10px 0;
+            animation: growBar 2s ease infinite;
+        }
+
+        @keyframes growBar {
+            0%, 100% { width: 60%; }
+            50% { width: 90%; }
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 40px;
+            background: linear-gradient(135deg, var(--primary-black) 0%, var(--dark-gray) 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            animation: rotate 60s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: clamp(36px, 5vw, 48px);
+            color: var(--pure-white);
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+
+        .cta-content p {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 40px;
+        }
+
+        .cta-white-button {
+            background: var(--pure-white);
+            color: var(--primary-black);
+            padding: 16px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .cta-white-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-black);
+            color: var(--pure-white);
+            padding: 60px 40px 30px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand h3 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            font-weight: 900;
+        }
+
+        .footer-brand p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        .footer-column h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--pure-white);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-column ul li a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--pure-white);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-container,
+            .admin-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .hero-visual {
+                order: -1;
+            }
+
+            .features-grid,
+            .steps-container {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .dashboard-preview {
+                transform: none;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">Revumate</div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#admin">Dashboard</a>
+                <a href="#cta" class="cta-button">Start Free Trial</a>
+            </div>
+        </div>
+    </nav>
 
-    <!-- wrapper -->
-    <div id="smooth-wrapper" class="mil-page-wrapper">
-
-        <!-- cursor -->
-        <div class="mil-cursor-follower"></div>
-        <!-- cursor end -->
-
-        <!-- preloader -->
-        <div class="mil-preloader">
-            <div class="mil-preloader-animation">
-                <div class="mil-pos-abs mil-animation-1">
-                    <p class="mil-head1 mil-m1">Create</p>
-                    <p class="mil-head1 mil-a2">Dominate</p>
-                    <p class="mil-head1 mil-m1">Automate</p>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Transform Every Customer Into a <span class="highlight">Growth Engine</span></h1>
+                <p>Send beautifully designed thank-you messages and collect valuable feedback that drives your business forward. Watch your reputation soar with Revumate's intelligent customer engagement platform.</p>
+                <div class="hero-buttons">
+                    <a href="#cta" class="cta-button">Start Growing Today</a>
+                    <a href="#features" class="secondary-button">See How It Works</a>
                 </div>
-                <div class="mil-pos-abs mil-animation-2">
-                    <div class="mil-reveal-frame">
-                        <p class="mil-reveal-box"></p>
-                        <p class="mil-head1 mil-m1">Stryke</p>
+            </div>
+            <div class="hero-visual">
+                <div class="dashboard-preview">
+                    <div class="dashboard-header">
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                        <div class="dot"></div>
+                    </div>
+                    <div class="dashboard-content">
+                        <div class="metric-card">
+                            <div>
+                                <div class="metric-value">98%</div>
+                                <div class="metric-label">Customer Satisfaction</div>
+                            </div>
+                            <div style="color: #27c93f; font-size: 20px;">↑</div>
+                        </div>
+                        <div class="metric-card">
+                            <div>
+                                <div class="metric-value">4.9/5</div>
+                                <div class="metric-label">Average Rating</div>
+                            </div>
+                            <div style="color: #27c93f; font-size: 20px;">★</div>
+                        </div>
+                        <div class="metric-card">
+                            <div>
+                                <div class="metric-value">2,847</div>
+                                <div class="metric-label">Reviews Collected</div>
+                            </div>
+                            <div style="color: #27c93f; font-size: 20px;">✓</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- preloader end -->
+    </section>
 
-        <!-- scroll progress -->
-        <div class="mil-progress-track">
-            <div class="mil-progress"></div>
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="section-header">
+            <h2>Everything You Need to Build Lasting Customer Relationships</h2>
+            <p>Powerful features designed to help you connect, engage, and grow with your customers</p>
         </div>
-        <!-- scroll progress end -->
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">✉</div>
+                <h3>Beautiful Thank-You Messages</h3>
+                <p>Create stunning, personalized thank-you messages that leave a lasting impression. Choose from professional templates or customize your own to match your brand perfectly.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📝</div>
+                <h3>Smart Feedback Collection</h3>
+                <p>Design custom feedback forms that customers actually want to fill out. Gather insights with intelligent question flows that adapt based on responses.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Real-Time Analytics</h3>
+                <p>Track customer sentiment, response rates, and satisfaction scores in real-time. Make data-driven decisions with comprehensive analytics at your fingertips.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Automated Workflows</h3>
+                <p>Set up intelligent automation that sends the right message at the perfect time. Trigger thank-you notes and feedback requests based on customer actions.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>Brand Customization</h3>
+                <p>Maintain brand consistency with fully customizable templates. Add your logo, colors, and messaging to create a seamless brand experience.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔗</div>
+                <h3>Seamless Integrations</h3>
+                <p>Connect Revumate with your existing tools and workflows. Integrate with CRM systems, email platforms, and analytics tools effortlessly.</p>
+            </div>
+        </div>
+    </section>
 
-        
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="section-header">
+            <h2>Get Started in Minutes, See Results in Days</h2>
+            <p>Our simple four-step process makes it easy to transform your customer engagement</p>
+        </div>
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Set Up Your Account</h3>
+                <p>Create your Revumate account in seconds. No credit card required to start your free trial.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Customize Templates</h3>
+                <p>Choose from our library of beautiful templates or create your own. Add your branding with just a few clicks.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Connect & Automate</h3>
+                <p>Integrate with your existing systems and set up automated workflows to reach customers at the perfect moment.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Track & Optimize</h3>
+                <p>Monitor real-time feedback, analyze insights, and continuously improve your customer relationships.</p>
+            </div>
+        </div>
+    </section>
 
-        <!-- page transition -->
-        <div class="mil-transition-fade" id="swup">
-            <div class="mil-transition-frame">
-
-                <!-- content -->
-                <div id="smooth-content" class="mil-content">
-
-                    <!-- hero -->
-                    <div class="mil-hero-4 mil-up" id="top">
-                        <div id="scene" class="mil-hero-scene">
-                            <div class="mil-anim-frame" data-depth="0.25">
-                                <img src="img/shapes/6.png" alt="shapes" class="mil-hero-animation" data-depth="0.25">
-                            </div>
-                            <div class="mil-pad-frame" data-depth="0.35">
-                                <div class="mil-shape-pad"></div>
-                            </div>
-                        </div>
-                        <div class="mil-overlay"></div>
-                        <div class="container mil-hero-main mil-relative">
-                            <div class="mil-hero-text">
-                                <i class="fal fa-award mil-mb15"></i>
-                                <p class="mil-stylized mil-m2 mil-mb60">The best<br> Team</p>
-                                <h1 class="mil-display2 mil-rubber">Automate <br>Your Business<br>With Us.</h1>
-                                <div class="mil-circle-text-frame">
-                                    <a href="#scroll" class="mil-circle-text mil-scroll-to mil-c-gone" data-no-swup>
-                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 300 300" enable-background="new 0 0 300 300" xml:space="preserve" data-value="360" class="mil-rotate">
-                                            <defs>
-                                                <path id="circlePath" d="M 150, 150 m -60, 0 a 60,60 0 0,1 120,0 a 60,60 0 0,1 -120,0 " />
-                                            </defs>
-                                            <circle cx="150" cy="100" r="75" fill="none" />
-                                            <g>
-                                                <use xlink:href="#circlePath" fill="none" />
-                                                <text style="letter-spacing: 2px">
-                                                    <!-- circle text -->
-                                                    <textPath xlink:href="#circlePath">scroll down - scroll down - scroll down - </textPath>
-                                                </text>
-                                            </g>
-                                        </svg>
-                                        <span class="mil-arrow">
-                                            <i class="fal fa-arrow-down"></i>
-                                        </span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- hero end -->
-
-                   
-
-                   
-
-                    <!-- counters -->
-                    <div class="mil-p-0-160">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="mil-counter-item mil-stl mil-mb30 mil-768-mb60 mil-up">
-                                        <h4 class="mil-up">1<span class="mil-a2">+</span></h4>
-                                        <div class="mil-counter-text">
-                                            <h5 class="mil-head4 mil-m1 mil-up">Years experience</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mil-counter-item mil-stl mil-mb30 mil-768-mb60 mil-up">
-                                        <h4 class="mil-up">10<span class="mil-a2">+</span></h4>
-                                        <div class="mil-counter-text">
-                                            <h5 class="mil-head4 mil-m1 mil-up">Unique customers</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mil-counter-item mil-stl mil-mb30 mil-up">
-                                        <h4 class="mil-up">20<span class="mil-a2">+</span></h4>
-                                        <div class="mil-counter-text">
-                                            <h5 class="mil-head4 mil-m1 mil-up">Completed projects</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+    <!-- Admin Dashboard Section -->
+    <section id="admin" class="admin-section">
+        <div class="admin-container">
+            <div class="admin-content">
+                <h2>Powerful Admin Dashboard That Puts You in Control</h2>
+                <p style="font-size: 18px; color: var(--medium-gray); margin-bottom: 30px;">Monitor every aspect of your customer engagement strategy from one intuitive dashboard. Make informed decisions with real-time data and comprehensive analytics.</p>
+                <div class="admin-features">
+                    <div class="admin-feature">
+                        <div class="check-icon">✓</div>
+                        <div>
+                            <strong>Live Feedback Monitoring</strong>
+                            <p style="color: var(--medium-gray); margin-top: 5px;">Watch feedback roll in real-time and respond instantly to customer concerns</p>
                         </div>
                     </div>
-                    <!-- counters end -->
-
-                    <!-- call to action -->
-                    <div class="container">
-                        <div class="mil-half-container mil-stl mil-up">
-                            <div class="mil-text-box mil-g-m4 mil-p-160-160">
-                                <p class="mil-stylized mil-m2 mil-mb60 mil-up">Contact</p>
-                                <h2 class="mil-display3 mil-mb60 mil-m1 mil-up">Let’s <span class="mil-a1">make </span> <br>an <span class="mil-a1">impact </span><br>together.</h2>
-                                <p class="mil-text-md mil-deco-text mil-shortened mil-up">Welcome to <span class="mil-a2">STRYKE</span>Where your business works smarter. We specialize in building powerful automations, streamlining daily operations, and creating efficient digital workflows that save time and boost growth for business owners.</p>
-                            </div>
-                           
-                        </div>
-                        <div class="row mil-aic mil-jcb mil-no-g">
-                            <div class="col-lg-4 mil-992-gone">
-                                <p class="mil-text-sm mil-up">We accept your requests 24/7. Feel free to <a href="#" class="mil-text-link mil-a2 mil-c-gone">write to us</a> whenever it is convenient for you</p>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mil-button-pad mil-a2">
-                                    <span class="mil-up"><a href="#" class="mil-btn mil-btn-border mil-m1 mil-c-gone">Get in touch</a></span>
-                                </div>
-                            </div>
+                    <div class="admin-feature">
+                        <div class="check-icon">✓</div>
+                        <div>
+                            <strong>Growth Analytics</strong>
+                            <p style="color: var(--medium-gray); margin-top: 5px;">Track key metrics like NPS, CSAT, and conversion rates over time</p>
                         </div>
                     </div>
-                    <!-- call to action end -->
-
-                    <!-- about -->
-                    <div class="mil-p-160-100" id="about">
-                        <div class="container">
-                            <div class="row mil-jcb">
-                                <div class="col-12">
-                                    <p class="mil-stylized mil-m2 mil-mb60 mil-up">About us</p>
-                                </div>
-                                <div class="col-lg-4">
-                                    <h2 class="mil-head1 mil-mb60 mil-up">Discover <br>Our <span class="mil-a2">agency</span></h2>
-                                    <p class="mil-text-sm mil-deco-text mil-mb60 mil-up">Welcome to <span class="mil-a2">STRYKE</span> Where your business works smarter. We specialize in building powerful automations, streamlining daily operations, and creating efficient digital workflows that save time and boost growth for business owners.</p>
-                                </div>
-                                <div class="col-lg-6">
-                                    <p class="mil-text-md mil-mb30 mil-up">Our team of automation experts works with passion and precision to simplify your business. We take the time to understand your unique workflow and design customized automations that save time, reduce errors, and let you focus on growth.</p>
-                                    <p class="mil-text-md mil-mb60 mil-up">Our goal is to help you create a stronger connection with your customers by leveraging smart automation. We combine our expertise with your business needs to design workflows that not only save time but also enhance customer experience. Trust us with your processes, and we’ll transform them into efficient systems that impress your clients, drive growth, and deliver lasting impact.</p>
-                                </div>
-                            </div>
+                    <div class="admin-feature">
+                        <div class="check-icon">✓</div>
+                        <div>
+                            <strong>Team Collaboration</strong>
+                            <p style="color: var(--medium-gray); margin-top: 5px;">Share insights and assign tasks to team members directly from the dashboard</p>
                         </div>
                     </div>
-                    <!-- about end -->
+                    <div class="admin-feature">
+                        <div class="check-icon">✓</div>
+                        <div>
+                            <strong>Export & Reporting</strong>
+                            <p style="color: var(--medium-gray); margin-top: 5px;">Generate detailed reports and export data for deeper analysis</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="admin-visual">
+                <div style="font-size: 14px; color: var(--medium-gray); margin-bottom: 20px;">LIVE DASHBOARD</div>
+                <div class="chart-container">
+                    <div style="font-weight: 600; margin-bottom: 15px;">Customer Satisfaction Trend</div>
+                    <div class="chart-bar" style="width: 85%;"></div>
+                    <div class="chart-bar" style="width: 70%; animation-delay: 0.2s;"></div>
+                    <div class="chart-bar" style="width: 95%; animation-delay: 0.4s;"></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
+                    <div style="background: var(--pure-white); padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 24px; font-weight: 700;">87%</div>
+                        <div style="font-size: 12px; color: var(--medium-gray);">Response Rate</div>
+                    </div>
+                    <div style="background: var(--pure-white); padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 24px; font-weight: 700;">4.8★</div>
+                        <div style="font-size: 12px; color: var(--medium-gray);">Avg Rating</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <!-- CTA Section -->
+    <section id="cta" class="cta-section">
+        <div class="cta-content">
+            <h2>Ready to Transform Your Customer Relationships?</h2>
+            <p>Join thousands of businesses already using Revumate to build stronger connections and drive sustainable growth.</p>
+            <a href="https://wa.me/+919746788667" class="cta-white-button">Start Your Free 14-Day Trial</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-brand">
+                <h3>Revumate</h3>
+                <p>Building meaningful connections between businesses and their customers through intelligent engagement tools.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Integrations</a></li>
+                    <li><a href="#">API Docs</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Community</a></li>
+                    <li><a href="#">Status</a></li>
+                    <li><a href="#">Security</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Revumate. All rights reserved. | Privacy Policy | Terms of Service</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all feature cards and steps
+        document.querySelectorAll('.feature-card, .step, .metric-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Add hover effect to CTA buttons
+        document.querySelectorAll('.cta-button, .cta-white-button').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px) scale(1.02)';
+            });
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Animated counter for metrics
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= target) {
+                    element.textContent = target.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(start).toLocaleString();
+                }
+            }, 16);
+        }
+
+        // Trigger counter animation when metrics are visible
+        const metricsObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.animated) {
+                    entry.target.animated = true;
+                    const value = entry.target.textContent;
+                    if (value === '2,847') {
+                        animateCounter(entry.target, 2847);
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.metric-value').forEach(el => {
+            if (el.textContent === '2,847') {
+                metricsObserver.observe(el);
+            }
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero::before');
+            if (parallax && scrolled < 1000) {
+                const yPos = -(scrolled * 0.5);
+                parallax.style.transform = `translateY(${yPos}px)`;
+            }
+        });
+
+        // Interactive dashboard preview
+        const dashboardPreview = document.querySelector('.dashboard-preview');
+        if (dashboardPreview) {
+            dashboardPreview.addEventListener('mousemove', (e) => {
+                const rect = dashboardPreview.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
                 
+                dashboardPreview.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            
+            dashboardPreview.addEventListener('mouseleave', () => {
+                dashboardPreview.style.transform = 'perspective(1000px) rotateY(-5deg)';
+            });
+        }
 
-                    <!-- reviews -->
-                    <!-- <div id="reviews">
-                        <div class="container">
-                            <div class="row mil-jcc">
-                                <div class="col-lg-12 mil-tac">
-                                    <p class="mil-stylized mil-m2 mil-mb60 mil-up">reviews</p>
-                                    <h2 class="mil-head1 mil-mb90 mil-up">Customer Voices: <br>Hear What <span class="mil-a2">They Say</span>!</h2>
-                                </div>
-                                <div class="col-lg-6 mil-relative">
-                                    <div class="swiper-container mil-reviews-slider mil-c-swipe mil-c-dark">
-                                        <div class="swiper-wrapper">
-                                            <div class="swiper-slide">
-                                                <div class="mil-review" data-swiper-parallax-scale="0.8">
-                                                    <div class="mil-portrait mil-mb30 mil-up">
-                                                        <img src="img/reviews/2.jpg" alt="Client">
-                                                    </div>
-                                                    <h4 class="mil-head4 mil-max-1row-text mil-mb15 mil-up mil-c-gone">Paul Trueman</h4>
-                                                    <p class="mil-stylized mil-m2 mil-mb30 mil-up">Envato market</p>
-                                                    <p class="mil-text-lg mil-m1 mil-up">I had the pleasure of working with this creative agency, and I must say, they truly impressed me. They consistently think outside the box, resulting in impressive and impactful work. I highly recommend this agency for their consistent delivery of exceptional creative solutions.</p>
-                                                </div>
-                                            </div>
-                                            <div class="swiper-slide">
-                                                <div class="mil-review" data-swiper-parallax-scale="0.8">
-                                                    <div class="mil-portrait mil-mb30 mil-up">
-                                                        <img src="img/reviews/1.jpg" alt="Client">
-                                                    </div>
-                                                    <h4 class="mil-head4 mil-max-1row-text mil-mb15 mil-up mil-c-gone">Emma Newman</h4>
-                                                    <p class="mil-stylized mil-m2 mil-mb30 mil-up">Envato market</p>
-                                                    <p class="mil-text-lg mil-m1 mil-up">This creative agency stands out with their exceptional talent and expertise. Their ability to think outside the box and bring unique ideas to life is truly impressive. With meticulous attention to detail, they consistently deliver visually stunning and impactful work.</p>
-                                                </div>
-                                            </div>
-                                            <div class="swiper-slide">
-                                                <div class="mil-review" data-swiper-parallax-scale="0.8">
-                                                    <div class="mil-portrait mil-mb30 mil-up">
-                                                        <img src="img/reviews/3.jpg" alt="Client">
-                                                    </div>
-                                                    <h4 class="mil-head4 mil-max-1row-text mil-mb15 mil-up mil-c-gone">Viktoria Freeman</h4>
-                                                    <p class="mil-stylized mil-m2 mil-mb30 mil-up">Envato market</p>
-                                                    <p class="mil-text-lg mil-m1 mil-up">This creative agency stands out with their exceptional talent and expertise. Their ability to think outside the box and bring unique ideas to life is truly impressive. With meticulous attention to detail, they consistently deliver visually stunning and impactful work.</p>
-                                                </div>
-                                            </div>
-                                            <div class="swiper-slide">
-                                                <div class="mil-review" data-swiper-parallax-scale="0.8">
-                                                    <div class="mil-portrait mil-mb30 mil-up">
-                                                        <img src="img/reviews/4.jpg" alt="Client">
-                                                    </div>
-                                                    <h4 class="mil-head4 mil-max-1row-text mil-mb15 mil-up mil-c-gone">Oscar Oldman</h4>
-                                                    <p class="mil-stylized mil-m2 mil-mb30 mil-up">Envato market</p>
-                                                    <p class="mil-text-lg mil-m1 mil-up">I had the pleasure of working with this creative agency, and I must say, they truly impressed me. They consistently think outside the box, resulting in impressive and impactful work. I highly recommend this agency for their consistent delivery of exceptional creative solutions.</p>
-                                                </div>
-                                            </div>
+        // Add subtle animation to feature icons on hover
+        document.querySelectorAll('.feature-icon').forEach(icon => {
+            icon.addEventListener('mouseenter', function() {
+                this.style.transform = 'rotate(360deg) scale(1.1)';
+                this.style.transition = 'transform 0.6s ease';
+            });
+            icon.addEventListener('mouseleave', function() {
+                this.style.transform = 'rotate(0deg) scale(1)';
+            });
+        });
 
-                                        </div>
-                                    </div>
-                                    <div class="mil-sr-pagination mil-up"></div>
-                                    <div class="mil-rs-nav mil-up">
-                                        <div class="mil-slider-btn mil-sr-prev mil-c-gone"></div>
-                                        <div class="mil-slider-btn mil-sr-next mil-c-gone"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                    <!-- reviews end -->
-
-                    
-
-                    <!-- call to action -->
-                    <div class="mil-p-0-100">
-                        <div class="container mil-relative">
-                            <div class="mil-objects">
-                                <div class="mil-obj-1"></div>
-                                <div class="mil-obj-2"></div>
-                            </div>
-                            <p class="mil-stylized mil-m2 mil-mb60 mil-tac mil-up">Explore our agency</p>
-                            <h2 class="mil-head1 mil-rubber mil-tac mil-mb60 mil-up">Stryke is an <span class="mil-a1">automation</span> partner that transforms <span class="mil-a1">workflows</span> into effortless systems. We build <span class="mil-a1">smart solutions</span>, breathe efficiency into businesses, and make the complex <span class="mil-a1">simple</span>. Choose <span class="mil-a1">Stryke</span> because automation should work for you!</h2>
-                            <div class="mil-text-with-button mil-mb60">
-                                <p class="mil-text-sm mil-tar mil-768-tac mil-up">“We’ve spent years building automation solutions that showcase our versatility and ability to adapt to any business need.</p>
-                                
-                            </div>
-                        </div>
-                    </div>
-                    <!-- call to action end -->
-
-                     <!-- hero -->
-                    <div class="mil-hero-1 mil-sm-hero mil-stl mil-up" id="top">
-                        <div class="mil-overlay"></div>
-                        <div class="container mil-hero-main mil-relative mil-aic">
-                            <div class="mil-hero-text mil-scale-img" data-value-1="1.3" data-value-2="0.95">
-                               
-                               
-                                <h1 class="mil-display2 mil-rubber">Get in <span class="mil-a2">touch</span></h1>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- hero end -->
-
-                    <!-- contact info -->
-                    <div class="mil-p-0-100">
-                        <div class="container">
-                            <div class="row mil-jcc">
-                                <div class="col-sm-8 col-lg-4">
-                                    <div class="mil-iconbox mil-tac mil-mb60">
-                                        <i class="fal fa-mobile mil-mb30 mil-up"></i>
-                                        <h4 class="mil-head4 mil-mb30 mil-up">Call</h4>
-                                        <p class="mil-stylized mil-m1 mil-mb15 mil-up">Office: </p>
-                                        <p class="mil-stylized mil-m1 mil-up">Support: </p>
-                                    </div>
-                                </div>
-                                <div class="col-sm-8 col-lg-4">
-                                    <div class="mil-iconbox mil-mb60">
-                                        <i class="fal fa-comment-alt-edit mil-mb30 mil-up"></i>
-                                        <h4 class="mil-head4 mil-mb30 mil-up">Write</h4>
-                                        <p class="mil-stylized mil-m1 mil-mb15 mil-up"></p>
-                                        <p class="mil-stylized mil-m1 mil-up"></p>
-                                    </div>
-                                </div>
-                                <div class="col-sm-8 col-lg-4">
-                                    <div class="mil-iconbox mil-tac mil-mb60">
-                                        <i class="fal fa-map-marker-alt mil-mb30 mil-up"></i>
-                                        <h4 class="mil-head4 mil-mb30 mil-up">visit</h4>
-                                        <p class="mil-stylized mil-m1 mil-mb15 mil-up">addrs</p>
-                                        <p class="mil-stylized mil-m1 mil-up">..</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- contact info end -->
-
-                   <!-- contact form -->
-<div class="">
-    <div class="container">
-        <h2 class="mil-display3 mil-rubber mil-mb90 mil-m1 mil-tac mil-up">let's <span class="mil-a1">talk</span></h2>
-        <form class="mil-stl mil-mb130">
-            <div class="row mil-aic">
-                <!-- Name -->
-                <div class="col-md-6 mil-mb30 mil-up">
-                    <input type="text" placeholder="Name">
-                </div>
-                <!-- Business Name -->
-                <div class="col-md-6 mil-mb30 mil-up">
-                    <input type="text" placeholder="Business Name">
-                </div>
-                <!-- Business Type -->
-                <div class="col-md-6 mil-mb30 mil-up">
-                    <input type="text" placeholder="Business Type">
-                </div>
-                <!-- Phone -->
-                <div class="col-md-6 mil-mb30 mil-up">
-                    <input type="text" placeholder="Phone">
-                </div>
-                <!-- Email -->
-                <div class="col-md-6 mil-mb30 mil-up">
-                    <input type="text" placeholder="Email">
-                </div>
-                <!-- Country -->
-                <div class="col-md-6 mil-mb30 mil-up">
-                    <input type="text" placeholder="Country">
-                </div>
-                <!-- Message -->
-                <div class="col-md-12 mil-mb30 mil-up">
-                    <textarea placeholder="Message"></textarea>
-                </div>
-                <!-- Privacy Note -->
-                <div class="col-md-6 mil-mb30">
-                    <p class="mil-text-sm mil-up">*We promise not to disclose your personal information to third parties.</p>
-                </div>
-                <!-- Submit Button -->
-                <div class="col-md-6 mil-mb30 mil-768-mb0 mil-jce mil-768-jcc mil-up">
-                    <button class="mil-btn mil-a2 mil-c-gone">Send message</button>
-                </div>
-            </div>
-        </form>
-        <div class="row mil-aic mil-jcb mil-no-g">
-            <div class="col-lg-6">
-                <div class="mil-button-pad mil-a1 mil-jst mil-up" style="display: block"></div>
-            </div>
-            <div class="col-lg-6 mil-992-gone">
-                <div class="mil-text-pad">
-                    <p class="mil-text-sm mil-up">By clicking the send button, you agree to the <br><a href="#" class="mil-text-link mil-a2 mil-c-gone">rules for processing personal data</a>.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- contact form end -->
-
-
-                    
-
-                    <!-- footer -->
-                    <footer class="mil-footer mil-p-160-160">
-                        <div class="container">
-                            <div class="row mil-no-g">
-                                <div class="col-lg-6 mil-up">
-                                    <a href="#" class="mil-footer-contact mil-mb90">
-                                        <h6 class="mil-footer-link mil-rubber mil-m1">Let’s TALK</h6>
-                                        <span class="mil-stylized-btn mil-c-gone">
-                                            <i class="fal fa-arrow-up"></i>
-                                            <span>Connect</span>
-                                        </span>
-                                    </a>
-                                </div>
-                                <!-- <div class="col-lg-12">
-                                    <div class="mil-footer-menu-frame mil-mb90 mil-up">
-                                        <ul class="mil-footer-menu">
-                                            <li><a href="#." class="mil-c-gone">Home</a></li>
-                                            <li><a href="#." class="mil-c-gone">Services</a></li>
-                                            <li><a href="#." class="mil-c-gone">About</a></li>
-                                            <li><a href="#." class="mil-c-gone">Portfolio</a></li>
-                                            <li><a href="#." class="mil-c-gone">Contact</a></li>
-                                        </ul>
-                                        <ul class="mil-social mil-c-gone">
-                                            <li><a href="#." target="_blank" data-no-swup><i class="fab fa-instagram"></i></a></li>
-                                            <li><a href="#." target="_blank" data-no-swup><i class="fab fa-behance"></i></a></li>
-                                            <li><a href="#." target="_blank" data-no-swup><i class="fab fa-dribbble"></i></a></li>
-                                            <li><a href="#." target="_blank" data-no-swup><i class="fab fa-pinterest-p"></i></a></li>
-                                            <li><a href="#." target="_blank" data-no-swup><i class="fab fa-github"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div> -->
-                            </div>
-
-                        </div>
-                    </footer>
-                    <!-- footer end -->
-
-                </div>
-                <!-- content -->
-
-            </div>
-        </div>
-        <!-- page transition -->
-
-    </div>
-    <!-- wrapper end -->
-
-    <!-- swup js -->
-    <script src="https://unpkg.com/swup@4"></script>
-    <!-- gsap js -->
-    <script src="js/plugins/gsap.min.js"></script>
-    <!-- scroll smoother -->
-    <script src="js/plugins/ScrollSmoother.min.js"></script>
-    <!-- scroll trigger js -->
-    <script src="js/plugins/ScrollTrigger.min.js"></script>
-    <!-- scroll to js -->
-    <script src="js/plugins/ScrollTo.min.js"></script>
-    <!-- swiper js -->
-    <script src="js/plugins/swiper.min.js"></script>
-    <!-- parallax js -->
-    <script src="js/plugins/parallax.js"></script>
-
-    <!-- pixy js -->
-    <script src="js/main.js"></script>
-
+        // Dynamic typing effect for hero headline
+        const highlight = document.querySelector('.highlight');
+        if (highlight) {
+            const text = highlight.textContent;
+            highlight.textContent = '';
+            let index = 0;
+            
+            function typeWriter() {
+                if (index < text.length) {
+                    highlight.textContent += text.charAt(index);
+                    index++;
+                    setTimeout(typeWriter, 100);
+                }
+            }
+            
+            setTimeout(typeWriter, 1000);
+        }
+    </script>
 </body>
 </html>
-
-
-
-
-

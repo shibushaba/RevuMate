@@ -1,0 +1,975 @@
+{
+  "name": "RevuMate",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * *"
+            }
+          ]
+        }
+      },
+      "id": "e0894d4c-2cca-4304-bffa-8f0c63f7a3e7",
+      "name": "Daily Review Request Schedule",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -432,
+        -464
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Xap9YgZYdSSgl0fxx364SVikSGFLf5QN_pKCp5a7tVc",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1598782408,
+          "mode": "list",
+          "cachedResultName": "RevuMate_Clients",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Xap9YgZYdSSgl0fxx364SVikSGFLf5QN_pKCp5a7tVc/edit#gid=1598782408"
+        },
+        "options": {}
+      },
+      "id": "4bac1fbf-f5c3-4f03-980d-71ca62144a89",
+      "name": "Read Active Clients",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        -240,
+        -464
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "QUAeKxQHxoSLdM4Z",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "active",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "id": "be9c04a0-c65c-4447-a5dc-c8c631c575e4"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "98d29b6f-5927-480f-80d6-1c53dd92f11e",
+      "name": "Filter Active Clients",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        -464
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Xap9YgZYdSSgl0fxx364SVikSGFLf5QN_pKCp5a7tVc",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $json.clientId }}",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "id": "ab8c79a3-663b-4a63-8197-019d30d44751",
+      "name": "Read Client Customers",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        176,
+        -464
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "QUAeKxQHxoSLdM4Z",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "active",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "id": "afd4410c-e980-4f73-9363-cd5115bdad17"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "604eba1c-94de-44e3-9310-81abf3039777",
+      "name": "Filter Active Customers",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        368,
+        -464
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.email }}",
+        "subject": "How was your experience with {{ $('Read Active Clients').item.json.businessName }}?",
+        "message": "<!DOCTYPE html>\n<html>\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Share Your Experience</title>\n</head>\n<body style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f6f7f9; margin: 0; padding: 20px;\">\n    <div style=\"max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; padding: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);\">\n        <h1 style=\"color: #333; margin: 0 0 16px; font-size: 24px;\">Hi {{ $json.customerName }}!</h1>\n        \n        <p style=\"color: #666; font-size: 16px; line-height: 1.5; margin: 0 0 24px;\">Thank you for choosing {{ $('Read Active Clients').item.json.businessName }}. We'd love to hear about your recent experience!</p>\n        \n        <div style=\"text-align: center; margin: 32px 0;\">\n            <a href=\"https://shibushaba.github.io/RevuMate/client-feedback-form?clientId={{ $('Read Active Clients').item.json.clientId }}&customerName={{ encodeURIComponent($json.customerName) }}&customerEmail={{ encodeURIComponent($json.email) }}\" \n               style=\"background: {{ $('Read Active Clients').item.json.brandColor || '#4CAF50' }}; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; display: inline-block;\">Share Your Feedback</a>\n        </div>\n        \n        <p style=\"color: #888; font-size: 14px; text-align: center; margin: 24px 0 0;\">This takes less than 2 minutes and helps us serve you better.</p>\n        \n        <hr style=\"border: none; border-top: 1px solid #eee; margin: 24px 0;\">\n        \n        <p style=\"color: #999; font-size: 12px; text-align: center; margin: 0;\">{{ $('Read Active Clients').item.json.businessName }} | Powered by RevuMate</p>\n    </div>\n</body>\n</html>",
+        "options": {}
+      },
+      "id": "84c00306-7739-44d6-b013-5cd40ea2cbd5",
+      "name": "Send Review Request Email",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [
+        576,
+        -464
+      ],
+      "webhookId": "671acb62-740c-4d18-9595-d4b6e0568e84",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "exqFuECeqxCWfubd",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1Xap9YgZYdSSgl0fxx364SVikSGFLf5QN_pKCp5a7tVc",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "=customers_{{ $('Read Active Clients').item.json.clientId }}"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "6d131ad8-3685-423e-82d0-51d94e03cc5f",
+      "name": "Update Last Contact Date",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        768,
+        -464
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "QUAeKxQHxoSLdM4Z",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "client-onboarding",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "694a569f-f8f2-49f1-b8d8-c7cd69e98a00",
+      "name": "Client Onboarding Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        -272
+      ],
+      "webhookId": "af8e198c-2601-46fe-a890-f95ec31e6839"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Xap9YgZYdSSgl0fxx364SVikSGFLf5QN_pKCp5a7tVc",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1598782408,
+          "mode": "list",
+          "cachedResultName": "RevuMate_Clients",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Xap9YgZYdSSgl0fxx364SVikSGFLf5QN_pKCp5a7tVc/edit#gid=1598782408"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "businessName": "={{ $json.body.businessName }}",
+            "contactName": "={{ $json.body.contactName }}",
+            "phone": "={{ $json.body.phone }}",
+            "email": "={{ $json.body.email }}",
+            "googleBusinessUrl": "={{ $json.body.googleBusinessUrl }}",
+            "status": "={{ $json.body.status }}",
+            "signupDate": "={{ $now }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "clientId",
+              "displayName": "clientId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "businessName",
+              "displayName": "businessName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "contactName",
+              "displayName": "contactName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "phone",
+              "displayName": "phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "monthlyFee",
+              "displayName": "monthlyFee",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "setupFee",
+              "displayName": "setupFee",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "signupDate",
+              "displayName": "signupDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "lastBillingDate",
+              "displayName": "lastBillingDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "googleBusinessUrl",
+              "displayName": "googleBusinessUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "brandColor",
+              "displayName": "brandColor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "customersSheetId",
+              "displayName": "customersSheetId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reviewsSheetId",
+              "displayName": "reviewsSheetId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "a03c844d-7f02-433c-baf5-917f991892c3",
+      "name": "Save New Client Lead",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        -240,
+        -272
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "QUAeKxQHxoSLdM4Z",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "shibushabas23@gmail.com",
+        "subject": "🚀 New RevuMate Client Lead: {{ $json.body.businessName }}",
+        "message": "<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: #f9f9f9;\">\n    <div style=\"background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);\">\n        <h2 style=\"color: #4CAF50; margin: 0 0 20px;\">🎉 New Client Lead Received!</h2>\n        \n        <div style=\"background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;\">\n            <h3 style=\"margin: 0 0 15px; color: #333;\">Business Details:</h3>\n            <p><strong>Business Name:</strong> {{ $json.body.businessName }}</p>\n            <p><strong>Contact Person:</strong> {{ $json.body.contactName }}</p>\n            <p><strong>Email:</strong> {{ $json.body.email }}</p>\n            <p><strong>Phone:</strong> {{ $json.body.phone }}</p>\n            <p><strong>Website:</strong> {{ $json.body.website || 'Not provided' }}</p>\n            <p><strong>Current Reviews:</strong> {{ $json.body.currentReviews || 'Not specified' }}</p>\n            <p><strong>Monthly Customers:</strong> {{ $json.body.monthlyCustomers || 'Not specified' }}</p>\n            <p><strong>Business Type:</strong> {{ $json.body.businessType || 'Not specified' }}</p>\n        </div>\n        \n        <div style=\"background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0;\">\n            <h3 style=\"margin: 0 0 15px; color: #2e7d32;\">💰 Revenue Opportunity:</h3>\n            <p><strong>Setup Fee:</strong> $100</p>\n            <p><strong>Monthly Revenue:</strong> $50/month</p>\n            <p><strong>Annual Value:</strong> $700</p>\n        </div>\n        \n        <div style=\"background: #fff3cd; padding: 20px; border-radius: 8px; margin: 20px 0;\">\n            <h3 style=\"margin: 0 0 15px; color: #856404;\">📋 Next Steps:</h3>\n            <ol style=\"margin: 0; padding-left: 20px;\">\n                <li>Send PayPal setup invoice ($100) to {{ $json.body.email }}</li>\n                <li>Schedule onboarding call within 24 hours</li>\n                <li>Create client sheets when payment received</li>\n                <li>Import customer database</li>\n                <li>Go live within 48 hours</li>\n            </ol>\n        </div>\n        \n        <div style=\"text-align: center; margin: 30px 0;\">\n            <p style=\"color: #666; margin: 0;\">Submission Time: {{ DateTime.now().toISO() }}</p>\n            <p style=\"color: #666; margin: 5px 0 0;\">Client ID: {{ $('Save New Client Lead').item.json.clientId }}</p>\n        </div>\n    </div>\n</div>",
+        "options": {}
+      },
+      "id": "97e04f78-6184-4717-930d-ee31602312ed",
+      "name": "Notify New Lead",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        -272
+      ],
+      "webhookId": "775bb4e8-faef-46c2-a6f3-34fb8d575a8d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "exqFuECeqxCWfubd",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": true,\n  \"message\": \"Thank you for your interest in RevuMate! We'll contact you within 24 hours to get your automated review system set up.\",\n  \"clientId\": \"{{ $('Save New Client Lead').item.json.clientId }}\",\n  \"nextSteps\": [\n    \"Setup invoice will be sent to your email\",\n    \"Onboarding call scheduled within 24 hours\",\n    \"System live within 48 hours of payment\"\n  ]\n}",
+        "options": {}
+      },
+      "id": "45ba9c61-f345-4a0a-a1a5-8daa037812ed",
+      "name": "Respond Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        176,
+        -272
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "client-feedback/{{ $parameter.clientId }}",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "70ec4202-1cb9-487e-bab4-64e75b0c9d3f",
+      "name": "Client Feedback Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        -64
+      ],
+      "webhookId": "7ed765ea-1c7c-470a-90e5-fcf8a94bb7e0"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Xap9YgZYdSSgl0fxx364SVikSGFLf5QN_pKCp5a7tVc",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "={{ $json.body.clientId }}",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "1": "={{ $json.body.rating }}",
+            "2": "={{ $json.body.comment }}",
+            "3": "={{ $json.body.review }}",
+            "4": "={{ $json.body.customerName }}",
+            "5": "={{ $json.body.customerEmail }}",
+            "6": "={{ $json.body.timestamp }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "1",
+              "displayName": "1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "2",
+              "displayName": "2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "3",
+              "displayName": "3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "4",
+              "displayName": "4",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "5",
+              "displayName": "5",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "6",
+              "displayName": "6",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "7",
+              "displayName": "7",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "8",
+              "displayName": "8",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "a538f084-8dec-4735-8ae9-f357c7385417",
+      "name": "Save Customer Feedback",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        -240,
+        -64
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "QUAeKxQHxoSLdM4Z",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"success\": true,\n  \"message\": \"Thank you for your feedback! {{ $json.body.rating >= 4 ? 'We really appreciate your positive review!' : 'We\\'ll use your feedback to improve our service.' }}\",\n  \"rating\": {{ $json.body.rating }},\n  \"showGoogleReview\": {{ $json.body.rating >= 4 ? 'true' : 'false' }}\n}",
+        "options": {}
+      },
+      "id": "18416df4-b001-4ce9-ac39-e787f70fd64c",
+      "name": "Respond Feedback Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "path": "client-analytics/{{ $parameter.clientId }}",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "8a0fb5c8-cbeb-4606-9de0-31c98f5f2bc5",
+      "name": "Analytics Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        144
+      ],
+      "webhookId": "06be6525-ce32-4534-af1e-412e037bdcde"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Xap9YgZYdSSgl0fxx364SVikSGFLf5QN_pKCp5a7tVc",
+          "mode": "id"
+        },
+        "sheetName": "=reviews_{{ $parameter.clientId }}",
+        "options": {}
+      },
+      "id": "3e6e76d6-315b-4a10-9e4d-b2e56b73ec35",
+      "name": "Read Client Reviews",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        -240,
+        144
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "QUAeKxQHxoSLdM4Z",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const reviews = $input.all();\n\nif (reviews.length === 0) {\n  return [{\n    json: {\n      error: \"No reviews found for this client\",\n      stats: { totalReviews: 0, averageRating: 0, responseRate: 0, googleReviewClicks: 0 },\n      charts: { ratingDistribution: [0,0,0,0,0], monthlyTrends: [] },\n      recentReviews: []\n    }\n  }];\n}\n\nconst totalReviews = reviews.length;\nconst ratings = reviews.map(r => parseInt(r.json.rating)).filter(r => !isNaN(r));\nconst averageRating = ratings.length > 0 ? (ratings.reduce((a,b) => a+b, 0) / ratings.length).toFixed(1) : 0;\nconst googleClicks = reviews.filter(r => r.json.googleReviewClicked === 'true').length;\n\nconst distribution = [0,0,0,0,0];\nratings.forEach(rating => {\n  if (rating >= 1 && rating <= 5) distribution[rating-1]++;\n});\n\nconst recentReviews = reviews\n  .sort((a,b) => new Date(b.json.submissionTime) - new Date(a.json.submissionTime))\n  .slice(0, 10)\n  .map(r => ({\n    customerName: r.json.customerName,\n    rating: r.json.rating,\n    feedback: r.json.feedback,\n    submissionTime: new Date(r.json.submissionTime).toLocaleDateString()\n  }));\n\nreturn [{\n  json: {\n    stats: {\n      totalReviews,\n      averageRating: parseFloat(averageRating),\n      responseRate: Math.round((totalReviews / Math.max(totalReviews * 2, 10)) * 100),\n      googleReviewClicks: googleClicks\n    },\n    charts: {\n      ratingDistribution: distribution,\n      monthlyTrends: [totalReviews]\n    },\n    recentReviews\n  }\n}];"
+      },
+      "id": "7a712ea1-75b4-4591-a8d3-32dac2132164",
+      "name": "Calculate Analytics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "16acfc43-02e6-460e-9a66-9b66512184df",
+      "name": "Respond Analytics",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        176,
+        144
+      ]
+    },
+    {
+      "parameters": {
+        "path": "admin-dashboard",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "07ad6000-5b88-49f4-b5c3-e136d94524bd",
+      "name": "Admin Dashboard Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        336
+      ],
+      "webhookId": "141c04e6-1f32-4a96-a90e-117b025e47be"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Xap9YgZYdSSgl0fxx364SVikSGFLf5QN_pKCp5a7tVc",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1598782408,
+          "mode": "list",
+          "cachedResultName": "RevuMate_Clients",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Xap9YgZYdSSgl0fxx364SVikSGFLf5QN_pKCp5a7tVc/edit#gid=1598782408"
+        },
+        "options": {}
+      },
+      "id": "55b955dd-83fc-4e39-9dec-15f1aa99d8a4",
+      "name": "Read All Clients",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        -240,
+        336
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "QUAeKxQHxoSLdM4Z",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const clients = $input.all();\n\nif (clients.length === 0) {\n  return [{\n    json: {\n      overview: { totalClients: 0, activeClients: 0, monthlyRevenue: 0, setupRevenue: 0 },\n      revenue: { monthly: [0], setup: [0] },\n      alerts: ['No clients found'],\n      clients: []\n    }\n  }];\n}\n\nconst activeClients = clients.filter(c => c.json.status === 'active');\nconst newLeads = clients.filter(c => c.json.status === 'new_lead');\nconst monthlyRevenue = activeClients.length * 50;\nconst setupRevenue = clients.filter(c => c.json.setupFee === '100').length * 100;\n\nconst alerts = [];\nif (newLeads.length > 0) alerts.push(`${newLeads.length} new leads need follow-up`);\nif (activeClients.length === 0) alerts.push('No active clients generating revenue');\n\nconst clientsData = clients.map(c => ({\n  clientId: c.json.clientId,\n  businessName: c.json.businessName,\n  contactName: c.json.contactName,\n  email: c.json.email,\n  phone: c.json.phone,\n  status: c.json.status,\n  monthlyFee: c.json.monthlyFee,\n  setupFee: c.json.setupFee,\n  signupDate: c.json.signupDate,\n  lastBillingDate: c.json.lastBillingDate\n}));\n\nreturn [{\n  json: {\n    overview: {\n      totalClients: clients.length,\n      activeClients: activeClients.length,\n      newLeads: newLeads.length,\n      monthlyRevenue,\n      setupRevenue,\n      totalRevenue: monthlyRevenue + setupRevenue\n    },\n    revenue: {\n      monthly: [monthlyRevenue],\n      setup: [setupRevenue],\n      total: [monthlyRevenue + setupRevenue]\n    },\n    alerts,\n    clients: clientsData\n  }\n}];"
+      },
+      "id": "6f731b26-8657-4305-8bb3-6f1b4132b207",
+      "name": "Calculate Admin Metrics",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "4f524669-ac28-4a77-9388-d8e0fcbc125c",
+      "name": "Respond Admin Dashboard",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        176,
+        336
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Daily Review Request Schedule": {
+      "main": [
+        [
+          {
+            "node": "Read Active Clients",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Active Clients": {
+      "main": [
+        [
+          {
+            "node": "Filter Active Clients",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Active Clients": {
+      "main": [
+        [
+          {
+            "node": "Read Client Customers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Client Customers": {
+      "main": [
+        [
+          {
+            "node": "Filter Active Customers",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Active Customers": {
+      "main": [
+        [
+          {
+            "node": "Send Review Request Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Review Request Email": {
+      "main": [
+        [
+          {
+            "node": "Update Last Contact Date",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Client Onboarding Webhook": {
+      "main": [
+        [
+          {
+            "node": "Save New Client Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save New Client Lead": {
+      "main": [
+        [
+          {
+            "node": "Notify New Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notify New Lead": {
+      "main": [
+        [
+          {
+            "node": "Respond Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Client Feedback Webhook": {
+      "main": [
+        [
+          {
+            "node": "Save Customer Feedback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Customer Feedback": {
+      "main": [
+        [
+          {
+            "node": "Respond Feedback Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analytics Webhook": {
+      "main": [
+        [
+          {
+            "node": "Read Client Reviews",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Client Reviews": {
+      "main": [
+        [
+          {
+            "node": "Calculate Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Analytics": {
+      "main": [
+        [
+          {
+            "node": "Respond Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Admin Dashboard Webhook": {
+      "main": [
+        [
+          {
+            "node": "Read All Clients",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read All Clients": {
+      "main": [
+        [
+          {
+            "node": "Calculate Admin Metrics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Admin Metrics": {
+      "main": [
+        [
+          {
+            "node": "Respond Admin Dashboard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e9904ff7-519a-4599-8c7b-a7dc57ca9b91",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fe9c4a34b46a73a2b7665dc2789cf79e253a8d341c798ea67f60c08e26166775"
+  },
+  "id": "vCqf7lgHXs5ikRWO",
+  "tags": [
+    {
+      "createdAt": "2025-09-03T09:51:25.673Z",
+      "updatedAt": "2025-09-03T09:51:25.673Z",
+      "id": "IS11pM7RezERxF5r",
+      "name": "Service Business"
+    },
+    {
+      "createdAt": "2025-09-03T09:51:25.710Z",
+      "updatedAt": "2025-09-03T09:51:25.710Z",
+      "id": "YWWEOWOWrxiW8klp",
+      "name": "Client Management"
+    },
+    {
+      "createdAt": "2025-08-30T15:53:39.899Z",
+      "updatedAt": "2025-08-30T15:53:39.899Z",
+      "id": "fcfh4bkgm89W2he7",
+      "name": "Analytics"
+    },
+    {
+      "createdAt": "2025-08-30T15:53:39.895Z",
+      "updatedAt": "2025-08-30T15:53:39.895Z",
+      "id": "hv1a6qbw3lYtwI4W",
+      "name": "Customer Reviews"
+    },
+    {
+      "createdAt": "2025-08-30T15:53:39.903Z",
+      "updatedAt": "2025-08-30T15:53:39.903Z",
+      "id": "pdAQXzUEeEDFB7WZ",
+      "name": "Automation"
+    }
+  ]
+}

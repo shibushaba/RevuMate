@@ -200,81 +200,110 @@
         .alerts-header {
             background: #e74c3c;
             color: white;
-            padding: 20px 25px;
-        }
-        
-        .alerts-header h3 {
-            font-size: 1.4em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .alert-item {
-            padding: 20px 25px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .alert-item:last-child {
-            border-bottom: none;
-        }
-        
-        .alert-icon {
-            font-size: 1.5em;
-        }
-        
-        .alert-content {
-            flex: 1;
-        }
-        
-        .alert-title {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .alert-description {
-            color: #666;
-            font-size: 0.9em;
-        }
-        
-        .clients-table-section {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-            overflow: hidden;
-        }
-        
-        .table-header {
-            background: #34495e;
-            color: white;
             padding: 25px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
-        .table-header h3 {
+        .alerts-header h3 {
             font-size: 1.5em;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            margin: 0;
         }
         
-        .filter-controls {
+        .alerts-list {
+            list-style: none;
+            padding: 20px 30px;
+        }
+        
+        .alert-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .alert-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .alert-icon {
+            color: #e74c3c;
+            font-size: 2em;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .alert-content p {
+            margin: 0;
+            font-size: 1em;
+            color: #555;
+        }
+        
+        .alert-content .alert-meta {
+            font-size: 0.8em;
+            color: #999;
+            margin-top: 5px;
+        }
+        
+        .alerts-footer {
+            padding: 20px 30px;
+            text-align: center;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .alerts-footer a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        /* Clients Table */
+        .clients-section {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        
+        .clients-header {
+            background: #34495e;
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .clients-header h3 {
+            font-size: 1.5em;
+            margin: 0;
+        }
+        
+        .clients-header .actions {
             display: flex;
             gap: 15px;
-            align-items: center;
+            flex-wrap: wrap;
         }
         
-        .filter-controls select,
-        .filter-controls input {
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
+        .clients-header .actions .btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .clients-header .actions .btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .clients-table-container {
+            padding: 0 30px 30px;
+            overflow-x: auto;
         }
         
         .clients-table {
@@ -282,8 +311,7 @@
             border-collapse: collapse;
         }
         
-        .clients-table th,
-        .clients-table td {
+        .clients-table th, .clients-table td {
             padding: 15px 20px;
             text-align: left;
             border-bottom: 1px solid #eee;
@@ -295,7 +323,7 @@
             color: #333;
         }
         
-        .clients-table tr:hover {
+        .clients-table tbody tr:hover {
             background: #f8f9fa;
         }
         
@@ -317,19 +345,13 @@
             color: #721c24;
         }
         
-        .status-badge.trial {
-            background: #fff3cd;
-            color: #856404;
-        }
-        
         .action-btn {
-            padding: 6px 12px;
+            padding: 8px 15px;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 12px;
-            margin-right: 5px;
-            transition: background 0.3s ease;
+            font-size: 0.9em;
+            font-weight: 600;
         }
         
         .action-btn.view {
@@ -337,463 +359,329 @@
             color: white;
         }
         
-        .action-btn.view:hover {
-            background: #2980b9;
-        }
-        
         .action-btn.edit {
             background: #f39c12;
             color: white;
         }
         
-        .action-btn.edit:hover {
-            background: #e67e22;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: #666;
-        }
-        
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3498db;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .refresh-btn {
-            background: #3498db;
+        .action-btn.delete {
+            background: #e74c3c;
             color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
         
-        .refresh-btn:hover {
-            background: #2980b9;
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            color: #aaa;
         }
         
-        @media (max-width: 1200px) {
+        /* Responsiveness */
+        @media (max-width: 992px) {
             .dashboard-sections {
                 grid-template-columns: 1fr;
+            }
+            
+            .header-stats {
+                flex-direction: column;
+                gap: 20px;
             }
         }
         
         @media (max-width: 768px) {
-            .header-content {
+            .clients-header {
                 flex-direction: column;
-                text-align: center;
-                gap: 20px;
+                align-items: flex-start;
+                gap: 15px;
             }
-            
-            .header-stats {
-                justify-content: center;
-            }
-            
-            .overview-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            }
-            
-            .overview-number {
-                font-size: 2.8em;
-            }
-            
-            .clients-table {
-                font-size: 14px;
-            }
-            
-            .clients-table th,
-            .clients-table td {
-                padding: 10px 15px;
+            .clients-header .actions {
+                justify-content: flex-start;
             }
         }
+        
     </style>
 </head>
 <body>
-    <div class="header">
+
+    <header class="header">
         <div class="header-content">
             <div>
-                <h1>🚀 RevuMate Service Dashboard</h1>
-                <p>Master control center for your review management service</p>
+                <h1>RevuMate Admin Dashboard</h1>
+                <p>Overview and management for your service.</p>
             </div>
             <div class="header-stats">
                 <div class="header-stat">
-                    <div class="header-stat-number" id="headerMRR">$0</div>
+                    <div class="header-stat-number" id="totalClientsHeader">...</div>
+                    <div class="header-stat-label">Total Clients</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-number" id="totalReviewsHeader">...</div>
+                    <div class="header-stat-label">Total Reviews</div>
+                </div>
+                <div class="header-stat">
+                    <div class="header-stat-number" id="monthlyRevenueHeader">...</div>
                     <div class="header-stat-label">Monthly Revenue</div>
                 </div>
-                <div class="header-stat">
-                    <div class="header-stat-number" id="headerClients">0</div>
-                    <div class="header-stat-label">Active Clients</div>
-                </div>
-                <div class="header-stat">
-                    <div class="header-stat-number" id="headerUptime">99.9%</div>
-                    <div class="header-stat-label">Service Uptime</div>
-                </div>
             </div>
         </div>
-    </div>
-    
-    <div class="container">
-        <div class="overview-grid">
-            <div class="overview-card revenue">
-                <div class="overview-number revenue" id="totalRevenue">$0</div>
-                <div class="overview-label">Total Revenue</div>
-                <div class="overview-change positive" id="revenueChange">+0% this month</div>
-            </div>
-            
-            <div class="overview-card clients">
-                <div class="overview-number clients" id="totalClients">0</div>
-                <div class="overview-label">Total Clients</div>
-                <div class="overview-change positive" id="clientsChange">+0 new this month</div>
-            </div>
-            
-            <div class="overview-card reviews">
-                <div class="overview-number reviews" id="totalReviews">0</div>
-                <div class="overview-label">Reviews Collected</div>
-                <div class="overview-change positive" id="reviewsChange">+0% this month</div>
-            </div>
-            
-            <div class="overview-card satisfaction">
-                <div class="overview-number satisfaction" id="avgSatisfaction">0.0</div>
-                <div class="overview-label">Avg. Client Rating</div>
-                <div class="overview-change positive" id="satisfactionChange">+0.0 this month</div>
-            </div>
-        </div>
+    </header>
+
+    <main class="container">
         
-        <div class="dashboard-sections">
+        <section class="overview-grid">
+            <div class="overview-card revenue">
+                <div class="overview-label">Total Revenue</div>
+                <div class="overview-number revenue" id="totalRevenueCard">$...</div>
+            </div>
+            <div class="overview-card clients">
+                <div class="overview-label">Active Clients</div>
+                <div class="overview-number clients" id="activeClientsCard">...</div>
+            </div>
+            <div class="overview-card reviews">
+                <div class="overview-label">Total Reviews</div>
+                <div class="overview-number reviews" id="totalReviewsCard">...</div>
+            </div>
+            <div class="overview-card satisfaction">
+                <div class="overview-label">Avg. Rating</div>
+                <div class="overview-number satisfaction" id="avgRatingCard">...</div>
+            </div>
+        </section>
+
+        <section class="dashboard-sections">
             <div class="chart-section">
-                <h3>📈 Revenue & Growth Trends</h3>
+                <h3><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trending-up"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>Revenue & Review Trends</h3>
                 <div class="chart-container">
-                    <canvas id="revenueChart"></canvas>
+                    <canvas id="revenueReviewChart"></canvas>
                 </div>
             </div>
-            
             <div class="alerts-section">
                 <div class="alerts-header">
-                    <h3>🚨 Service Alerts</h3>
+                    <h3>Critical Alerts</h3>
+                    <a href="#" style="color: white; text-decoration: none;">View All</a>
                 </div>
-                <div id="alertsList">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                        <p>Loading alerts...</p>
-                    </div>
+                <ul class="alerts-list" id="alertsList">
+                    <li>
+                        <div class="alert-item">
+                            <div class="alert-icon">!</div>
+                            <div class="alert-content">
+                                <p><strong>Failed Payment</strong> from John's Landscaping.</p>
+                                <p class="alert-meta">Yesterday, 10:30 AM</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="alert-item">
+                            <div class="alert-icon">!</div>
+                            <div class="alert-content">
+                                <p><strong>New 1-Star Review</strong> for Sarah's Salon.</p>
+                                <p class="alert-meta">2 hours ago</p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="clients-section">
+            <div class="clients-header">
+                <h3>Clients Management</h3>
+                <div class="actions">
+                    <button class="btn add-client-btn">Add New Client</button>
+                    <button class="btn export-btn" onclick="exportClientData()">Export Data</button>
                 </div>
             </div>
-        </div>
-        
-        <div class="clients-table-section">
-            <div class="table-header">
-                <h3>👥 Client Management</h3>
-                <div class="filter-controls">
-                    <select id="statusFilter">
-                        <option value="all">All Status</option>
-                        <option value="active">Active</option>
-                        <option value="trial">Trial</option>
-                        <option value="inactive">Inactive</option>
-                    </select>
-                    <input type="text" id="searchFilter" placeholder="Search clients...">
-                    <button class="refresh-btn" onclick="loadDashboardData()">
-                        🔄 Refresh
-                    </button>
-                </div>
-            </div>
-            <div style="overflow-x: auto;">
+            <div class="clients-table-container">
                 <table class="clients-table">
                     <thead>
                         <tr>
-                            <th>Business Name</th>
-                            <th>Contact</th>
+                            <th>Business</th>
                             <th>Status</th>
-                            <th>Monthly Fee</th>
-                            <th>Reviews</th>
-                            <th>Avg Rating</th>
+                            <th>Reviews Sent</th>
+                            <th>Reviews Rec.</th>
                             <th>Last Activity</th>
+                            <th>Last Payment</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="clientsTableBody">
                         <tr>
-                            <td colspan="8">
-                                <div class="loading">
-                                    <div class="spinner"></div>
-                                    <p>Loading client data...</p>
-                                </div>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>...</td>
+                            <td>
+                                <button class="action-btn view">View</button>
+                                <button class="action-btn edit">Edit</button>
+                                <button class="action-btn delete">Delete</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        &copy; 2024 RevuMate. All rights reserved.
+    </footer>
 
     <script>
         let revenueChart;
-        let dashboardData = {};
-        
-        // Initialize dashboard
-        document.addEventListener('DOMContentLoaded', () => {
-            loadDashboardData();
-            setupFilters();
-            
-            // Auto-refresh every 5 minutes
-            setInterval(loadDashboardData, 5 * 60 * 1000);
-        });
-        
+
+        document.addEventListener('DOMContentLoaded', loadDashboardData);
+
         async function loadDashboardData() {
             try {
-                const response = await fetch('http://localhost:5678/webhook/admin-dashboard');
-                dashboardData = await response.json();
+                // Replace with your actual n8n webhook URL
+                const webhookUrl = 'YOUR_N8N_WEBHOOK_URL/admin-dashboard-data';
                 
-                if (dashboardData.error) {
-                    console.error('Dashboard error:', dashboardData.error);
-                    showNoData();
-                    return;
+                const response = await fetch(webhookUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
+                const data = await response.json();
                 
-                renderOverviewStats(dashboardData.overview);
-                renderRevenueChart(dashboardData.revenue);
-                renderAlerts(dashboardData.alerts);
-                renderClientsTable(dashboardData.clients);
-                
+                updateOverviewCards(data.overview);
+                updateHeaderStats(data.overview);
+                createRevenueReviewChart(data.trends);
+                populateClientsTable(data.clients);
+                populateAlerts(data.alerts);
+
             } catch (error) {
-                console.error('Error loading dashboard:', error);
+                console.error("Could not fetch dashboard data:", error);
                 showNoData();
             }
         }
-        
-        function renderOverviewStats(overview) {
-            // Header stats
-            document.getElementById('headerMRR').textContent = `$${overview.monthlyRevenue || 0}`;
-            document.getElementById('headerClients').textContent = overview.activeClients || 0;
-            document.getElementById('headerUptime').textContent = `${overview.uptime || 99.9}%`;
-            
-            // Overview cards
-            document.getElementById('totalRevenue').textContent = `$${overview.totalRevenue || 0}`;
-            document.getElementById('totalClients').textContent = overview.totalClients || 0;
-            document.getElementById('totalReviews').textContent = overview.totalReviews || 0;
-            document.getElementById('avgSatisfaction').textContent = (overview.avgSatisfaction || 0).toFixed(1);
-            
-            // Changes
-            document.getElementById('revenueChange').textContent = `${overview.revenueChange >= 0 ? '+' : ''}${overview.revenueChange || 0}% this month`;
-            document.getElementById('clientsChange').textContent = `+${overview.newClients || 0} new this month`;
-            document.getElementById('reviewsChange').textContent = `${overview.reviewsChange >= 0 ? '+' : ''}${overview.reviewsChange || 0}% this month`;
-            document.getElementById('satisfactionChange').textContent = `${overview.satisfactionChange >= 0 ? '+' : ''}${(overview.satisfactionChange || 0).toFixed(1)} this month`;
-            
-            // Update change indicators
-            updateChangeIndicator('revenueChange', overview.revenueChange);
-            updateChangeIndicator('reviewsChange', overview.reviewsChange);
-            updateChangeIndicator('satisfactionChange', overview.satisfactionChange);
+
+        function updateOverviewCards(overviewData) {
+            document.getElementById('totalRevenueCard').textContent = `$${overviewData?.totalRevenue || 0}`;
+            document.getElementById('activeClientsCard').textContent = overviewData?.activeClients || 0;
+            document.getElementById('totalReviewsCard').textContent = overviewData?.totalReviews || 0;
+            document.getElementById('avgRatingCard').textContent = overviewData?.avgRating?.toFixed(1) || 'N/A';
         }
         
-        function updateChangeIndicator(elementId, value) {
-            const element = document.getElementById(elementId);
-            element.className = `overview-change ${value >= 0 ? 'positive' : 'negative'}`;
+        function updateHeaderStats(overviewData) {
+            document.getElementById('totalClientsHeader').textContent = overviewData?.totalClients || 0;
+            document.getElementById('totalReviewsHeader').textContent = overviewData?.totalReviews || 0;
+            document.getElementById('monthlyRevenueHeader').textContent = `$${overviewData?.monthlyRevenue || 0}`;
         }
         
-        function renderRevenueChart(revenueData) {
-            const ctx = document.getElementById('revenueChart').getContext('2d');
-            if (revenueChart) revenueChart.destroy();
+        function createRevenueReviewChart(trendsData) {
+            const ctx = document.getElementById('revenueReviewChart').getContext('2d');
+            
+            // Destroy existing chart if it exists
+            if (revenueChart) {
+                revenueChart.destroy();
+            }
             
             revenueChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: revenueData.labels || [],
-                    datasets: [
-                        {
-                            label: 'Monthly Revenue',
-                            data: revenueData.monthlyRevenue || [],
-                            borderColor: '#27ae60',
-                            backgroundColor: '#27ae6020',
-                            borderWidth: 3,
-                            fill: true,
-                            tension: 0.4
-                        },
-                        {
-                            label: 'New Clients',
-                            data: revenueData.newClients || [],
-                            borderColor: '#e74c3c',
-                            backgroundColor: '#e74c3c20',
-                            borderWidth: 3,
-                            fill: false,
-                            tension: 0.4,
-                            yAxisID: 'y1'
-                        }
-                    ]
+                    labels: trendsData.months,
+                    datasets: [{
+                        label: 'Reviews Rec.',
+                        data: trendsData.reviews,
+                        borderColor: '#f39c12',
+                        backgroundColor: 'rgba(243, 156, 18, 0.2)',
+                        tension: 0.3,
+                        fill: true
+                    }, {
+                        label: 'Revenue',
+                        data: trendsData.revenue,
+                        borderColor: '#27ae60',
+                        backgroundColor: 'rgba(39, 174, 96, 0.2)',
+                        tension: 0.3,
+                        fill: true
+                    }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    interaction: {
-                        mode: 'index',
-                        intersect: false,
-                    },
-                    plugins: {
-                        legend: {
-                            position: 'top',
-                        }
-                    },
                     scales: {
                         y: {
-                            type: 'linear',
-                            display: true,
-                            position: 'left',
-                            title: {
-                                display: true,
-                                text: 'Revenue ($)'
-                            }
-                        },
-                        y1: {
-                            type: 'linear',
-                            display: true,
-                            position: 'right',
-                            title: {
-                                display: true,
-                                text: 'New Clients'
-                            },
-                            grid: {
-                                drawOnChartArea: false,
-                            },
+                            beginAtZero: true
                         }
                     }
                 }
             });
         }
         
-        function renderAlerts(alerts) {
-            const alertsList = document.getElementById('alertsList');
+        function populateClientsTable(clientsData) {
+            const tableBody = document.getElementById('clientsTableBody');
+            tableBody.innerHTML = '';
             
-            if (!alerts || alerts.length === 0) {
-                alertsList.innerHTML = `
-                    <div class="alert-item">
-                        <div class="alert-icon">✅</div>
-                        <div class="alert-content">
-                            <div class="alert-title">All Systems Operational</div>
-                            <div class="alert-description">No alerts at this time</div>
-                        </div>
-                    </div>
-                `;
+            if (!clientsData || clientsData.length === 0) {
+                showNoData();
                 return;
             }
             
-            const alertsHTML = alerts.map(alert => `
-                <div class="alert-item">
-                    <div class="alert-icon">${getAlertIcon(alert.type)}</div>
-                    <div class="alert-content">
-                        <div class="alert-title">${alert.title}</div>
-                        <div class="alert-description">${alert.description}</div>
-                    </div>
-                </div>
-            `).join('');
-            
-            alertsList.innerHTML = alertsHTML;
-        }
-        
-        function getAlertIcon(type) {
-            const icons = {
-                'warning': '⚠️',
-                'error': '❌',
-                'info': 'ℹ️',
-                'success': '✅'
-            };
-            return icons[type] || 'ℹ️';
-        }
-        
-        function renderClientsTable(clients) {
-            const tbody = document.getElementById('clientsTableBody');
-            
-            if (!clients || clients.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="8" style="text-align: center; padding: 50px;">
-                            <h3>No clients yet</h3>
-                            <p>Clients will appear here once they sign up for your service.</p>
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-            
-            const clientsHTML = clients.map(client => `
-                <tr>
-                    <td><strong>${client.businessName}</strong></td>
-                    <td>
-                        <div>${client.contactName}</div>
-                        <div style="font-size: 0.9em; color: #666;">${client.email}</div>
-                    </td>
-                    <td><span class="status-badge ${client.status}">${client.status.toUpperCase()}</span></td>
-                    <td>$${client.monthlyFee}</td>
-                    <td>${client.totalReviews || 0}</td>
-                    <td>${client.avgRating ? client.avgRating.toFixed(1) : '0.0'} ⭐</td>
+            clientsData.forEach(client => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${client.businessName}</td>
+                    <td><span class="status-badge ${client.status.toLowerCase()}">${client.status}</span></td>
+                    <td>${client.reviewsSent || 0}</td>
+                    <td>${client.reviewsReceived || 0}</td>
                     <td>${formatDate(client.lastActivity)}</td>
+                    <td>${formatDate(client.lastPayment)}</td>
                     <td>
                         <button class="action-btn view" onclick="viewClient('${client.clientId}')">View</button>
                         <button class="action-btn edit" onclick="editClient('${client.clientId}')">Edit</button>
+                        <button class="action-btn delete">Delete</button>
                     </td>
-                </tr>
-            `).join('');
-            
-            tbody.innerHTML = clientsHTML;
+                `;
+                tableBody.appendChild(row);
+            });
         }
         
-        function setupFilters() {
-            const statusFilter = document.getElementById('statusFilter');
-            const searchFilter = document.getElementById('searchFilter');
+        function populateAlerts(alertsData) {
+            const alertsList = document.getElementById('alertsList');
+            alertsList.innerHTML = '';
             
-            statusFilter.addEventListener('change', filterClients);
-            searchFilter.addEventListener('input', filterClients);
-        }
-        
-        function filterClients() {
-            const statusFilter = document.getElementById('statusFilter').value;
-            const searchTerm = document.getElementById('searchFilter').value.toLowerCase();
-            
-            if (!dashboardData.clients) return;
-            
-            let filteredClients = dashboardData.clients;
-            
-            if (statusFilter !== 'all') {
-                filteredClients = filteredClients.filter(client => client.status === statusFilter);
+            if (!alertsData || alertsData.length === 0) {
+                alertsList.innerHTML = `
+                    <li>
+                        <div class="alert-item">
+                            <div class="alert-content">
+                                <p><strong>No new alerts.</strong></p>
+                                <p class="alert-meta">All systems are operational.</p>
+                            </div>
+                        </div>
+                    </li>
+                `;
+                return;
             }
             
-            if (searchTerm) {
-                filteredClients = filteredClients.filter(client => 
-                    client.businessName.toLowerCase().includes(searchTerm) ||
-                    client.contactName.toLowerCase().includes(searchTerm) ||
-                    client.email.toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            renderClientsTable(filteredClients);
+            alertsData.forEach(alert => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <div class="alert-item">
+                        <div class="alert-icon">!</div>
+                        <div class="alert-content">
+                            <p><strong>${alert.message}</strong></p>
+                            <p class="alert-meta">${alert.timestamp}</p>
+                        </div>
+                    </div>
+                `;
+                alertsList.appendChild(listItem);
+            });
         }
         
         function viewClient(clientId) {
-            // Open client analytics dashboard in new tab
-            const client = dashboardData.clients.find(c => c.clientId === clientId);
-            if (client) {
-                const url = `client-analytics-dashboard.html?clientId=${clientId}&business=${encodeURIComponent(client.businessName)}&color=${encodeURIComponent(client.brandColor || '#4CAF50')}`;
-                window.open(url, '_blank');
-            }
+            const url = `client-analytics-dashboard.html?clientId=${clientId}`;
+            window.open(url, '_blank');
         }
         
         function editClient(clientId) {
             // This would open a client editing modal or page
             alert(`Edit client functionality would be implemented here for client: ${clientId}`);
+        }
+        
+        function exportClientData() {
+            // Placeholder for data export functionality
+            alert('Exporting data...');
         }
         
         function formatDate(dateString) {

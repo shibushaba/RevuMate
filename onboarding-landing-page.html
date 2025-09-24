@@ -157,7 +157,10 @@
             margin-bottom: 0.5rem;
         }
         
-        .stat-label { font-size: 0.9rem; opacity: 0.8; }
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
         
         /* Problem Section */
         .problem-section {
@@ -202,121 +205,69 @@
             background: white;
             padding: 2rem;
             border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            text-align: left;
         }
         
-        .problem-icon { font-size: 3rem; margin-bottom: 1rem; }
-        
-        .problem-title {
+        .problem-item h4 {
             font-size: 1.2rem;
             font-weight: 700;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
         
-        .problem-description {
+        .problem-item p {
             color: var(--text-light);
-            line-height: 1.5;
+            font-size: 0.95rem;
         }
         
         /* Solution Section */
         .solution-section {
             padding: 6rem 0;
-            background: white;
+            text-align: center;
         }
         
-        .solution-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-        
-        .solution-text h2 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-        }
-        
-        .solution-text p {
-            font-size: 1.1rem;
-            color: var(--text-light);
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-        
-        .solution-features {
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-        
-        .solution-features li {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            font-weight: 500;
-        }
-        
-        .checkmark {
+        .solution-section .section-badge {
             background: var(--secondary);
-            color: white;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
         }
         
-        .workflow-diagram {
-            background: var(--bg-light);
-            border-radius: 20px;
-            padding: 2rem;
+        .workflow-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
         }
         
         .workflow-step {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
-        
-        .workflow-step::after {
-            content: '↓';
-            position: absolute;
-            bottom: -1.5rem;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-        
-        .workflow-step:last-child::after { display: none; }
         
         .step-number {
+            width: 50px;
+            height: 50px;
             background: var(--primary);
             color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-size: 1.5rem;
             font-weight: 700;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         
-        .step-title {
+        .workflow-step h4 {
+            font-size: 1.2rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
         }
         
-        .step-description {
+        .workflow-step p {
             color: var(--text-light);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
         
         /* Pricing Section */
@@ -326,466 +277,415 @@
             text-align: center;
         }
         
-        .pricing-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 900px;
-            margin: 0 auto;
+        .pricing-section .section-badge {
+            background: var(--accent);
         }
         
         .pricing-card {
-            background: white;
-            border-radius: 20px;
-            padding: 3rem 2rem;
-            position: relative;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
         }
         
-        .pricing-card:hover { transform: translateY(-10px); }
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
         
         .pricing-card.featured {
-            border: 3px solid var(--primary);
-            transform: scale(1.05);
+            border-color: var(--primary);
+            position: relative;
         }
         
-        .pricing-card.featured::before {
-            content: 'Most Popular';
+        .pricing-card.featured .tag {
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
             position: absolute;
             top: -15px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--primary);
-            color: white;
-            padding: 0.5rem 2rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
         }
         
-        .pricing-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
+        .pricing-card h3 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
         }
         
-        .pricing-price {
+        .pricing-card .price {
             font-size: 3rem;
             font-weight: 800;
-            color: var(--primary);
+            color: var(--text);
             margin-bottom: 0.5rem;
         }
         
-        .pricing-period {
+        .price .period {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-light);
+        }
+        
+        .pricing-card .setup-fee {
+            font-size: 1.1rem;
             color: var(--text-light);
             margin-bottom: 2rem;
         }
         
-        .pricing-features {
+        .pricing-card .features {
             list-style: none;
-            margin-bottom: 2rem;
             text-align: left;
+            margin-bottom: 2rem;
         }
         
-        .pricing-features li {
+        .pricing-card .features li {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            padding: 0.5rem 0;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            color: var(--text-light);
         }
         
-        .pricing-features .icon {
+        .features li svg {
             color: var(--secondary);
-            font-weight: bold;
+            flex-shrink: 0;
         }
         
-        /* CTA Section */
-        .cta-section {
-            padding: 6rem 0;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        .pricing-cta {
+            background: var(--primary);
             color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: block;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .pricing-cta:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+        }
+        
+        /* Contact Form */
+        .contact-section {
+            padding: 6rem 0;
             text-align: center;
         }
         
-        .cta-content h2 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
+        .contact-section .section-badge {
+            background: var(--primary);
         }
         
-        .cta-content p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-        
-        .cta-form {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
+        .form-container {
             max-width: 600px;
             margin: 0 auto;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-        
-        .cta-form h3 {
-            color: var(--text);
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-        }
-        
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1rem;
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            text-align: left;
         }
         
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
         
         .form-group label {
             display: block;
+            font-weight: 600;
             margin-bottom: 0.5rem;
             color: var(--text);
-            font-weight: 500;
         }
         
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-group input, .form-group textarea {
             width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e5e7eb;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
             border-radius: 8px;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
         }
         
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
         }
         
-        .form-submit {
+        .submit-btn {
             background: var(--primary);
             color: white;
             padding: 1rem 2rem;
             border: none;
             border-radius: 8px;
             font-size: 1.1rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             width: 100%;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
         }
         
-        .form-submit:hover {
+        .submit-btn:hover {
             background: var(--primary-dark);
         }
         
-        .success-message {
-            background: var(--secondary);
-            color: white;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-            display: none;
+        #formStatus {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-weight: 600;
         }
         
-        /* Mobile Responsiveness */
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: #d1d5db;
+            padding: 3rem 0;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .footer-content .logo {
+            color: white;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        /* Responsiveness */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1rem; }
             .hero-stats { grid-template-columns: 1fr; }
-            .solution-content { grid-template-columns: 1fr; }
-            .form-grid { grid-template-columns: 1fr; }
             .section-title { font-size: 2rem; }
+            .workflow-grid, .pricing-grid { grid-template-columns: 1fr; }
+            .form-container { padding: 2rem; }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
+
     <header class="header">
-        <nav class="container">
-            <div class="nav">
-                <a href="#" class="logo">🚀 RevuMate Service</a>
-                <a href="#get-started" class="cta-button">Get Started</a>
-            </div>
-        </nav>
+        <div class="container nav">
+            <a href="#" class="logo">RevuMate</a>
+            <a href="#contact" class="cta-button">Get Started</a>
+        </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>Get <span class="highlight">10x More</span> Customer Reviews Automatically</h1>
-            <p>Professional review collection service that transforms your customer feedback into a powerful marketing asset. Set it up once, collect reviews forever.</p>
-            <div class="hero-buttons">
-                <a href="#get-started" class="btn-primary">Start Collecting Reviews</a>
-                <a href="#how-it-works" class="btn-secondary">See How It Works</a>
-            </div>
-            <div class="hero-stats">
-                <div class="stat-item">
-                    <div class="stat-number">10x</div>
-                    <div class="stat-label">More Reviews</div>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Get <span class="highlight">10x More</span> <br>Customer Reviews Automatically.</h1>
+                <p>RevuMate is the simplest way for local service businesses to collect and manage genuine Google reviews from their happy customers, all on autopilot.</p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn-primary">Start Your Free Trial</a>
+                    <a href="#features" class="btn-secondary">Learn More</a>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">Automated</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">15%</div>
-                    <div class="stat-label">Response Rate</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Problem Section -->
-    <section class="problem-section">
-        <div class="container">
-            <div class="section-badge">The Problem</div>
-            <h2 class="section-title">Why Most Businesses Struggle with Reviews</h2>
-            <p class="section-description">Getting customer reviews shouldn't be this hard. Yet most businesses face the same challenges that prevent them from building a strong online reputation.</p>
-            
-            <div class="problem-grid">
-                <div class="problem-item">
-                    <div class="problem-icon">😰</div>
-                    <h3 class="problem-title">Customers Don't Leave Reviews</h3>
-                    <p class="problem-description">Only 2-5% of customers naturally leave reviews, leaving most businesses with barely any online presence.</p>
-                </div>
-                <div class="problem-item">
-                    <div class="problem-icon">⏰</div>
-                    <h3 class="problem-title">Manual Follow-up is Time-Consuming</h3>
-                    <p class="problem-description">Manually asking each customer for reviews takes hours every week and often gets forgotten.</p>
-                </div>
-                <div class="problem-item">
-                    <div class="problem-icon">📧</div>
-                    <h3 class="problem-title">Generic Emails Get Ignored</h3>
-                    <p class="problem-description">Mass emails asking for reviews feel impersonal and achieve poor response rates.</p>
-                </div>
-                <div class="problem-item">
-                    <div class="problem-icon">📊</div>
-                    <h3 class="problem-title">No Visibility into Performance</h3>
-                    <p class="problem-description">Without proper tracking, you never know what's working or how to improve your review collection.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Solution Section -->
-    <section class="solution-section" id="how-it-works">
-        <div class="container">
-            <div class="solution-content">
-                <div class="solution-text">
-                    <div class="section-badge">The Solution</div>
-                    <h1>🚀 RevuMate</h1>
-                    <h2>Collection That Actually Works</h2>
-                    <p>Our professional service handles everything for you. From personalized customer outreach to branded feedback forms and real-time analytics - we make review collection completely hands-off.</p>
-                    
-                    <ul class="solution-features">
-                        <li><span class="checkmark">✓</span> Automated daily review requests</li>
-                        <li><span class="checkmark">✓</span> Personalized customer messaging</li>
-                        <li><span class="checkmark">✓</span> Professional branded landing pages</li>
-                        <li><span class="checkmark">✓</span> Real-time analytics dashboard</li>
-                        <li><span class="checkmark">✓</span> Google Review integration</li>
-                        <li><span class="checkmark">✓</span> Complete setup and management</li>
-                    </ul>
-                    
-                    <a href="#get-started" class="btn-primary">Get Started Today</a>
-                </div>
-                <div class="solution-visual">
-                    <div class="workflow-diagram">
-                        <div class="workflow-step">
-                            <div class="step-number">1</div>
-                            <div class="step-title">We Set Up Your System</div>
-                            <div class="step-description">Complete setup with your branding, customer data, and Google Business integration</div>
-                        </div>
-                        <div class="workflow-step">
-                            <div class="step-number">2</div>
-                            <div class="step-title">Automated Daily Outreach</div>
-                            <div class="step-description">Personalized emails and SMS sent to your customers automatically</div>
-                        </div>
-                        <div class="workflow-step">
-                            <div class="step-number">3</div>
-                            <div class="step-title">Customers Leave Feedback</div>
-                            <div class="step-description">Professional landing pages collect reviews and direct to Google</div>
-                        </div>
-                        <div class="workflow-step">
-                            <div class="step-number">4</div>
-                            <div class="step-title">You Get More Reviews</div>
-                            <div class="step-description">Real-time dashboard shows your growing review collection</div>
-                        </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">10x</div>
+                        <div class="stat-label">More Reviews</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">95%</div>
+                        <div class="stat-label">Customer Satisfaction</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">Automated System</div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Pricing Section -->
-    <section class="pricing-section" id="pricing">
-        <div class="container">
-            <div class="section-badge">Simple Pricing</div>
-            <h2 class="section-title">Affordable Professional Service</h2>
-            <p class="section-description">No long-term contracts. Cancel anytime. Get started for less than the cost of a single employee hour per month.</p>
-            
-            <div class="pricing-cards">
-                <div class="pricing-card">
-                    <h3 class="pricing-title">Setup Fee</h3>
-                    <div class="pricing-price">$100</div>
-                    <div class="pricing-period">One-time</div>
-                    <ul class="pricing-features">
-                        <li><span class="icon">✓</span> Complete system setup</li>
-                        <li><span class="icon">✓</span> Custom branding</li>
-                        <li><span class="icon">✓</span> Customer data import</li>
-                        <li><span class="icon">✓</span> Google Business integration</li>
-                        <li><span class="icon">✓</span> Landing page creation</li>
-                        <li><span class="icon">✓</span> Analytics dashboard</li>
-                    </ul>
-                    <a href="#get-started" class="btn-primary">Get Started</a>
-                </div>
-                
-                <div class="pricing-card featured">
-                    <h3 class="pricing-title">Monthly Service</h3>
-                    <div class="pricing-price">$50</div>
-                    <div class="pricing-period">per month</div>
-                    <ul class="pricing-features">
-                        <li><span class="icon">✓</span> Unlimited review requests</li>
-                        <li><span class="icon">✓</span> Email & SMS outreach</li>
-                        <li><span class="icon">✓</span> 24/7 automated system</li>
-                        <li><span class="icon">✓</span> Real-time analytics</li>
-                        <li><span class="icon">✓</span> Customer support</li>
-                        <li><span class="icon">✓</span> Monthly performance reports</li>
-                    </ul>
-                    <a href="#get-started" class="btn-primary">Start Service</a>
+        <section class="problem-section" id="features">
+            <div class="container">
+                <span class="section-badge">The Problem</span>
+                <h2 class="section-title">Manual Review Collection is a Pain.</h2>
+                <p class="section-description">Most businesses miss out on valuable customer feedback because the process of asking for and collecting reviews is inconsistent and time-consuming.</p>
+                <div class="problem-grid">
+                    <div class="problem-item">
+                        <h4>It's Awkward to Ask</h4>
+                        <p>Asking for a review face-to-face can feel uncomfortable and intrusive for both you and your customer.</p>
+                    </div>
+                    <div class="problem-item">
+                        <h4>It's Easy to Forget</h4>
+                        <p>In the rush of daily operations, you and your team often forget to follow up with customers at the right time.</p>
+                    </div>
+                    <div class="problem-item">
+                        <h4>It's Inefficient</h4>
+                        <p>Manually sending emails or links one-by-one is not scalable and takes away time from running your business.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section" id="get-started">
-        <div class="container">
-            <div class="cta-content">
-                <h2>Ready to Get 10x More Reviews?</h2>
-                <p>Join hundreds of businesses already using our automated review collection service. Setup takes less than 24 hours.</p>
-                
-                <div class="cta-form">
-                    <h3>Get Started Today - $100 Setup + $50/Month</h3>
-                    <p style="margin-bottom: 1rem; color: #666;">Contact: shibushabas23@gmail.com | +919746788667</p>
-                    <p style="font-size: 0.9rem; color: #888;">Professional review management service for growing businesses</p>
+        <section class="solution-section">
+            <div class="container">
+                <span class="section-badge">The Solution</span>
+                <h2 class="section-title">Automate Your Review Collection.</h2>
+                <p class="section-description">RevuMate handles the entire process for you, so you can focus on what you do best while your reviews grow on autopilot.</p>
+                <div class="workflow-grid">
+                    <div class="workflow-step">
+                        <div class="step-number">1</div>
+                        <h4>You Serve a Customer</h4>
+                        <p>After a successful service, you simply add your customer's email to a shared Google Sheet.</p>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-number">2</div>
+                        <h4>We Send the Request</h4>
+                        <p>Our system automatically sends a personalized email asking for feedback within 24 hours.</p>
+                    </div>
+                    <div class="workflow-step">
+                        <div class="step-number">3</div>
+                        <h4>They Leave a Review</h4>
+                        <p>Customers click a link that takes them directly to your Google Business Profile to leave a review.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="pricing-section">
+            <div class="container">
+                <span class="section-badge">Pricing</span>
+                <h2 class="section-title">Simple & Transparent Pricing.</h2>
+                <p class="section-description">One flat fee. No hidden charges. No long-term contracts. Just results.</p>
+                <div class="pricing-grid">
+                    <div class="pricing-card featured">
+                        <div class="tag">Most Popular</div>
+                        <h3>Pro Plan</h3>
+                        <p class="price">$50<span class="period">/month</span></p>
+                        <p class="setup-fee">+ $100 Setup Fee</p>
+                        <ul class="features">
+                            <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-8.68"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>Automated Review Requests</li>
+                            <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-8.68"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>Up to 500 Emails/Month</li>
+                            <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-8.68"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>Client Analytics Dashboard</li>
+                            <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-8.68"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>Customizable Review Page</li>
+                            <li><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-8.68"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>Email Support</li>
+                        </ul>
+                        <a href="#contact" class="pricing-cta">Get Started Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-section" id="contact">
+            <div class="container">
+                <span class="section-badge">Free Trial</span>
+                <h2 class="section-title">Sign Up for Your Free Trial.</h2>
+                <p class="section-description">Fill out the form below to get started. No credit card required. We will be in touch within 24 hours to set up your account.</p>
+                <div class="form-container">
                     <form id="onboardingForm">
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="businessName">Business Name *</label>
-                                <input type="text" id="businessName" name="businessName" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="contactName">Your Name *</label>
-                                <input type="text" id="contactName" name="contactName" required>
-                            </div>
-                        </div>
-                        
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="email">Email Address *</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Phone Number *</label>
-                                <input type="tel" id="phone" name="phone" required>
-                            </div>
-                        </div>
-                        
                         <div class="form-group">
-                            <label for="businessType">Business Type *</label>
-                            <select id="businessType" name="businessType" required>
-                                <option value="">Select your business type</option>
-                                <option value="restaurant">Restaurant/Food Service</option>
-                                <option value="retail">Retail Store</option>
-                                <option value="salon">Salon/Spa</option>
-                                <option value="contractor">Contractor/Home Services</option>
-                                <option value="professional">Professional Services</option>
-                                <option value="healthcare">Healthcare</option>
-                                <option value="automotive">Automotive</option>
-                                <option value="other">Other</option>
-                            </select>
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" required>
                         </div>
-                        
                         <div class="form-group">
-                            <label for="currentReviews">Current Google Reviews</label>
-                            <select id="currentReviews" name="currentReviews">
-                                <option value="0-10">0-10 reviews</option>
-                                <option value="11-25">11-25 reviews</option>
-                                <option value="26-50">26-50 reviews</option>
-                                <option value="51-100">51-100 reviews</option>
-                                <option value="100+">100+ reviews</option>
-                            </select>
+                            <label for="businessName">Your Business Name</label>
+                            <input type="text" id="businessName" name="businessName" required>
                         </div>
-                        
                         <div class="form-group">
-                            <label for="googleBusinessUrl">Google Business Profile URL (if you have one)</label>
-                            <input type="url" id="googleBusinessUrl" name="googleBusinessUrl" placeholder="https://g.page/yourbusiness">
+                            <label for="email">Business Email</label>
+                            <input type="email" id="email" name="email" required>
                         </div>
-                        
                         <div class="form-group">
-                            <label for="additionalInfo">Tell us about your business (optional)</label>
-                            <textarea id="additionalInfo" name="additionalInfo" rows="3" placeholder="What services do you offer? What makes your business special?"></textarea>
+                            <label for="phone">Phone Number (Optional)</label>
+                            <input type="tel" id="phone" name="phone">
                         </div>
-                        
-                        <button type="submit" class="form-submit">Start My Review Collection Service</button>
-                        
-                        <div class="success-message" id="successMessage">
-                            <strong>Thank you!</strong> We've received your information and will contact you within 24 hours to set up your automated review collection system.
+                        <div class="form-group">
+                            <label for="message">Anything else we should know?</label>
+                            <textarea id="message" name="message"></textarea>
                         </div>
+                        <button type="submit" class="submit-btn">Start My Free Trial</button>
                     </form>
+                    <p id="formStatus"></p>
                 </div>
             </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <a href="#" class="logo">RevuMate</a>
+            <p>&copy; 2024 RevuMate. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
         </div>
-    </section>
+    </footer>
 
     <script>
-        // Form submission handling
-        document.getElementById('onboardingForm').addEventListener('submit', async (e) => {
+        document.getElementById('onboardingForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            const formData = new FormData(e.target);
+
+            const form = e.target;
+            const statusMessage = document.getElementById('formStatus');
+            const submitBtn = form.querySelector('button[type="submit"]');
+
+            // Replace with your actual n8n webhook URL
+            const webhookUrl = 'YOUR_N8N_WEBHOOK_URL/onboarding-lead-capture';
+
+            submitBtn.textContent = 'Submitting...';
+            submitBtn.disabled = true;
+            statusMessage.textContent = '';
+            statusMessage.style.color = '#1f2937';
+
+            const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
-            
-            // Add timestamp and additional data
-            data.submissionTime = new Date().toISOString();
-            data.source = 'landing_page';
-            data.status = 'new_lead';
-            
+
             try {
-                const response = await fetch('http://localhost:5678/webhook/client-onboarding', {
+                const response = await fetch(webhookUrl, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(data)
                 });
-                
+
                 if (response.ok) {
-                    document.getElementById('onboardingForm').style.display = 'none';
-                    document.getElementById('successMessage').style.display = 'block';
-                    
-                    // Track conversion
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'conversion', {
-                            'send_to': 'AW-CONVERSION_ID/CONVERSION_LABEL'
-                        });
-                    }
+                    statusMessage.textContent = 'Success! We have received your request and will be in touch shortly.';
+                    statusMessage.style.color = 'green';
+                    form.reset();
                 } else {
-                    throw new Error('Submission failed');
+                    const errorText = await response.text();
+                    throw new Error(`Server responded with status: ${response.status} and message: ${errorText}`);
                 }
             } catch (error) {
-                console.error('Error:', error);
-                alert('There was an error submitting your information. Please try again or contact us directly.');
+                console.error('Error submitting form:', error);
+                statusMessage.textContent = 'There was an error submitting your request. Please try again later.';
+                statusMessage.style.color = 'red';
+            } finally {
+                submitBtn.textContent = 'Start My Free Trial';
+                submitBtn.disabled = false;
             }
         });
         

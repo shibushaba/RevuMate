@@ -141,10 +141,11 @@
             border-radius: 15px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
             overflow: hidden;
+            margin-bottom: 40px;
         }
         
         .reviews-header {
-            background: var(--primary-color, #4CAF50);
+            background: #34495e;
             color: white;
             padding: 25px 30px;
             display: flex;
@@ -154,360 +155,235 @@
         
         .reviews-header h3 {
             font-size: 1.5em;
+            margin: 0;
         }
         
-        .reviews-list {
-            max-height: 500px;
-            overflow-y: auto;
+        .reviews-table {
+            width: 100%;
+            border-collapse: collapse;
         }
         
-        .review-item {
-            padding: 25px 30px;
+        .reviews-table th, .reviews-table td {
+            padding: 15px 20px;
+            text-align: left;
             border-bottom: 1px solid #eee;
-            transition: background 0.3s ease;
         }
         
-        .review-item:hover {
+        .reviews-table th {
             background: #f8f9fa;
-        }
-        
-        .review-item:last-child {
-            border-bottom: none;
-        }
-        
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        
-        .customer-name {
-            font-weight: bold;
+            font-weight: 600;
             color: #333;
         }
         
-        .review-date {
-            color: #666;
-            font-size: 0.9em;
+        .reviews-table tbody tr:hover {
+            background: #f8f9fa;
         }
         
-        .rating-stars {
-            color: #ffd700;
+        .review-rating {
+            color: #f39c12;
             font-size: 1.2em;
-            margin-bottom: 10px;
         }
         
-        .review-text {
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 10px;
-        }
-        
-        .review-tags {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .tag {
-            background: #e9ecef;
-            color: #495057;
-            padding: 4px 12px;
-            border-radius: 15px;
-            font-size: 0.8em;
-        }
-        
-        .tag.positive {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        .tag.negative {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: #666;
-        }
-        
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--primary-color, #4CAF50);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .no-data {
-            text-align: center;
-            padding: 50px;
-            color: #666;
-        }
-        
-        .no-data h3 {
-            margin-bottom: 15px;
+        .review-source {
+            font-size: 0.9em;
             color: #999;
         }
         
-        .export-btn {
-            background: var(--primary-color, #4CAF50);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s ease;
+        .review-comment {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 5px;
         }
         
-        .export-btn:hover {
-            background: #45a049;
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            color: #aaa;
+        }
+        
+        @media (max-width: 992px) {
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
         }
         
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
-                text-align: center;
-                gap: 20px;
-            }
-            
-            .charts-section {
-                grid-template-columns: 1fr;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            }
-            
-            .stat-number {
-                font-size: 2.5em;
-            }
-            
-            .review-header {
-                flex-direction: column;
                 align-items: flex-start;
-                gap: 5px;
+                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="header">
+
+    <header class="header">
         <div class="header-content">
             <div>
-                <h1 id="businessName">Analytics Dashboard</h1>
-                <p>Real-time insights into your customer feedback</p>
+                <h1 id="businessNameHeader">Analytics Dashboard</h1>
+                <p>An overview of your review performance.</p>
             </div>
             <div class="refresh-info">
-                <span>🔄 Auto-refresh: <span id="refreshTimer">15:00</span></span>
+                Last refreshed: <span id="lastUpdated">...</span>
             </div>
         </div>
-    </div>
-    
-    <div class="container">
-        <div class="stats-grid" id="statsGrid">
-            <div class="loading">
-                <div class="spinner"></div>
-                <p>Loading analytics data...</p>
-            </div>
-        </div>
+    </header>
+
+    <main class="container">
         
-        <div class="charts-section" id="chartsSection" style="display: none;">
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Reviews</div>
+                <div class="stat-number" id="totalReviewsStat">...</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Average Rating</div>
+                <div class="stat-number" id="avgRatingStat">...</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Response Rate</div>
+                <div class="stat-number" id="responseRateStat">...</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Google Review Clicks</div>
+                <div class="stat-number" id="googleClicksStat">...</div>
+            </div>
+        </section>
+
+        <section class="charts-section">
             <div class="chart-card">
-                <h3>📊 Rating Distribution</h3>
+                <h3>Rating Breakdown</h3>
                 <div class="chart-container">
-                    <canvas id="ratingChart"></canvas>
+                    <canvas id="ratingDistributionChart"></canvas>
                 </div>
             </div>
-            
             <div class="chart-card">
-                <h3>📈 Reviews Over Time</h3>
+                <h3>Reviews Over Time</h3>
                 <div class="chart-container">
-                    <canvas id="trendsChart"></canvas>
+                    <canvas id="reviewTrendsChart"></canvas>
                 </div>
             </div>
-        </div>
-        
-        <div class="reviews-section" id="reviewsSection" style="display: none;">
+        </section>
+
+        <section class="reviews-section">
             <div class="reviews-header">
-                <h3>💬 Recent Reviews</h3>
-                <button class="export-btn" onclick="exportData()">📥 Export Data</button>
+                <h3>Recent Reviews</h3>
             </div>
-            <div class="reviews-list" id="reviewsList">
-                <div class="loading">
-                    <div class="spinner"></div>
-                    <p>Loading recent reviews...</p>
-                </div>
+            <div class="reviews-table-container">
+                <table class="reviews-table">
+                    <thead>
+                        <tr>
+                            <th>Rating</th>
+                            <th>Customer</th>
+                            <th>Source</th>
+                            <th>Comment</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reviewsTableBody">
+                        </tbody>
+                </table>
             </div>
-        </div>
-    </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        &copy; 2024 RevuMate. All rights reserved.
+    </footer>
 
     <script>
-        // Get URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const businessName = urlParams.get('business') || 'Your Business';
-        const clientId = urlParams.get('clientId') || '';
-        const primaryColor = urlParams.get('color') || '#4CAF50';
-        
-        // Set CSS custom property for primary color
-        // Updated for localhost n8n instance
-        document.documentElement.style.setProperty('--primary-color', primaryColor);
-        
-        // Update business name
-        document.getElementById('businessName').textContent = `${businessName} - Analytics`;
-        document.title = `Analytics Dashboard - ${businessName}`;
-        
-        let refreshInterval;
         let ratingChart, trendsChart;
-        
-        // Initialize dashboard
+        let refreshInterval;
+
         document.addEventListener('DOMContentLoaded', () => {
             loadAnalyticsData();
-            startRefreshTimer();
+            startAutoRefresh();
         });
-        
+
         async function loadAnalyticsData() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const clientId = urlParams.get('clientId');
+            
+            if (!clientId) {
+                showNoData();
+                return;
+            }
+
             try {
-                const response = await fetch(`http://localhost:5678/webhook/client-analytics/${clientId}`);
+                // Replace with your actual n8n webhook URL
+                const webhookUrl = `YOUR_N8N_WEBHOOK_URL/client-dashboard-data?clientId=${clientId}`;
+
+                const response = await fetch(webhookUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 const data = await response.json();
                 
-                if (data.error) {
-                    showNoData();
-                    return;
-                }
-                
-                renderStats(data.stats);
-                renderCharts(data.charts);
-                renderRecentReviews(data.recentReviews);
-                
-                document.getElementById('chartsSection').style.display = 'grid';
-                document.getElementById('reviewsSection').style.display = 'block';
-                
+                // Update page elements with data
+                updateTitleAndHeader(data.businessName, data.brandColor);
+                updateStats(data.stats);
+                createRatingChart(data.ratingDistribution);
+                createTrendsChart(data.trends);
+                populateReviewsTable(data.reviews);
+                updateLastUpdated();
+
             } catch (error) {
-                console.error('Error loading analytics:', error);
+                console.error("Could not fetch analytics data:", error);
                 showNoData();
             }
         }
         
-        function renderStats(stats) {
-            const statsGrid = document.getElementById('statsGrid');
-            
-            const statsHTML = `
-                <div class="stat-card">
-                    <div class="stat-number">${stats.totalReviews || 0}</div>
-                    <div class="stat-label">Total Reviews</div>
-                    <div class="stat-change ${stats.reviewsChange >= 0 ? 'positive' : 'negative'}">
-                        ${stats.reviewsChange >= 0 ? '+' : ''}${stats.reviewsChange || 0}% this month
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-number">${stats.averageRating || '0.0'}</div>
-                    <div class="stat-label">Average Rating</div>
-                    <div class="stat-change ${stats.ratingChange >= 0 ? 'positive' : 'negative'}">
-                        ${stats.ratingChange >= 0 ? '+' : ''}${stats.ratingChange || 0.0} from last month
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-number">${stats.responseRate || '0'}%</div>
-                    <div class="stat-label">Response Rate</div>
-                    <div class="stat-change ${stats.responseChange >= 0 ? 'positive' : 'negative'}">
-                        ${stats.responseChange >= 0 ? '+' : ''}${stats.responseChange || 0}% this month
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-number">${stats.googleReviewClicks || 0}</div>
-                    <div class="stat-label">Google Review Clicks</div>
-                    <div class="stat-change ${stats.clicksChange >= 0 ? 'positive' : 'negative'}">
-                        ${stats.clicksChange >= 0 ? '+' : ''}${stats.clicksChange || 0}% this month
-                    </div>
-                </div>
-            `;
-            
-            statsGrid.innerHTML = statsHTML;
+        function updateTitleAndHeader(businessName, brandColor) {
+            document.title = `Analytics Dashboard - ${businessName}`;
+            document.getElementById('businessNameHeader').textContent = businessName;
+            if (brandColor) {
+                document.documentElement.style.setProperty('--primary-color', brandColor);
+            }
         }
-        
-        function renderCharts(chartData) {
-            // Rating Distribution Chart
-            const ratingCtx = document.getElementById('ratingChart').getContext('2d');
-            if (ratingChart) ratingChart.destroy();
+
+        function updateStats(statsData) {
+            document.getElementById('totalReviewsStat').textContent = statsData?.totalReviews || 0;
+            document.getElementById('avgRatingStat').textContent = (statsData?.avgRating || 0).toFixed(1);
+            document.getElementById('responseRateStat').textContent = `${statsData?.responseRate || 0}%`;
+            document.getElementById('googleClicksStat').textContent = statsData?.googleClicks || 0;
+        }
+
+        function createRatingChart(distribution) {
+            const ctx = document.getElementById('ratingDistributionChart').getContext('2d');
             
-            ratingChart = new Chart(ratingCtx, {
-                type: 'doughnut',
+            if (ratingChart) {
+                ratingChart.destroy();
+            }
+            
+            ratingChart = new Chart(ctx, {
+                type: 'bar',
                 data: {
-                    labels: ['5 Stars', '4 Stars', '3 Stars', '2 Stars', '1 Star'],
+                    labels: ['1 Star', '2 Stars', '3 Stars', '4 Stars', '5 Stars'],
                     datasets: [{
-                        data: chartData.ratingDistribution || [0, 0, 0, 0, 0],
-                        backgroundColor: [
-                            '#28a745',
-                            '#6f42c1',
-                            '#ffc107',
-                            '#fd7e14',
-                            '#dc3545'
-                        ],
-                        borderWidth: 2,
-                        borderColor: '#fff'
+                        label: 'Number of Reviews',
+                        data: distribution,
+                        backgroundColor: ['#e74c3c', '#e67e22', '#f1c40f', '#3498db', '#2ecc71'],
+                        borderColor: 'rgba(0, 0, 0, 0)',
+                        borderWidth: 1
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                padding: 20,
-                                usePointStyle: true
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Trends Chart
-            const trendsCtx = document.getElementById('trendsChart').getContext('2d');
-            if (trendsChart) trendsChart.destroy();
-            
-            trendsChart = new Chart(trendsCtx, {
-                type: 'line',
-                data: {
-                    labels: chartData.trendLabels || [],
-                    datasets: [{
-                        label: 'Reviews',
-                        data: chartData.trendData || [],
-                        borderColor: primaryColor,
-                        backgroundColor: primaryColor + '20',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
                     scales: {
                         y: {
                             beginAtZero: true,
-                            ticks: {
-                                stepSize: 1
+                            title: {
+                                display: true,
+                                text: 'Number of Reviews'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Rating'
                             }
                         }
                     }
@@ -515,65 +391,116 @@
             });
         }
         
-        function renderRecentReviews(reviews) {
-            const reviewsList = document.getElementById('reviewsList');
+        function createTrendsChart(trends) {
+            const ctx = document.getElementById('reviewTrendsChart').getContext('2d');
             
-            if (!reviews || reviews.length === 0) {
-                reviewsList.innerHTML = `
-                    <div class="no-data">
-                        <h3>No reviews yet</h3>
-                        <p>Reviews will appear here once customers start submitting feedback.</p>
-                    </div>
+            if (trendsChart) {
+                trendsChart.destroy();
+            }
+            
+            trendsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: trends.months,
+                    datasets: [{
+                        label: 'Total Reviews',
+                        data: trends.totalReviews,
+                        borderColor: document.documentElement.style.getPropertyValue('--primary-color') || '#4CAF50',
+                        tension: 0.3,
+                        fill: false
+                    }, {
+                        label: 'Avg. Rating',
+                        data: trends.avgRating,
+                        borderColor: '#f39c12',
+                        tension: 0.3,
+                        fill: false,
+                        yAxisID: 'y1'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Reviews'
+                            }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            beginAtZero: true,
+                            max: 5,
+                            title: {
+                                display: true,
+                                text: 'Average Rating'
+                            },
+                            grid: {
+                                drawOnChartArea: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function populateReviewsTable(reviewsData) {
+            const tableBody = document.getElementById('reviewsTableBody');
+            tableBody.innerHTML = '';
+            
+            if (!reviewsData || reviewsData.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 50px;">
+                            <h3>No reviews found.</h3>
+                            <p>Once you start getting reviews, they will appear here.</p>
+                        </td>
+                    </tr>
                 `;
                 return;
             }
             
-            const reviewsHTML = reviews.map(review => `
-                <div class="review-item">
-                    <div class="review-header">
-                        <span class="customer-name">${review.customerName || 'Anonymous'}</span>
-                        <span class="review-date">${formatDate(review.submissionTime)}</span>
-                    </div>
-                    <div class="rating-stars">${'⭐'.repeat(review.rating || 0)}</div>
-                    <div class="review-text">${review.feedback || 'No feedback provided'}</div>
-                    ${review.suggestions ? `<div class="review-text"><strong>Suggestions:</strong> ${review.suggestions}</div>` : ''}
-                    <div class="review-tags">
-                        ${review.wouldRecommend === 'yes' ? '<span class="tag positive">Would Recommend</span>' : ''}
-                        ${review.googleReviewClicked === 'true' ? '<span class="tag positive">Google Review Clicked</span>' : ''}
-                        ${review.contactPreference && review.contactPreference !== 'none' ? `<span class="tag">Contact: ${review.contactPreference}</span>` : ''}
-                    </div>
-                </div>
-            `).join('');
-            
-            reviewsList.innerHTML = reviewsHTML;
+            reviewsData.forEach(review => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${'★'.repeat(review.rating)}</td>
+                    <td>${review.customerName}</td>
+                    <td><span class="review-source">${review.source}</span></td>
+                    <td><span class="review-comment">${review.comment || 'N/A'}</span></td>
+                    <td>${new Date(review.timestamp).toLocaleDateString()}</td>
+                `;
+                tableBody.appendChild(row);
+            });
         }
-        
+
+        function updateLastUpdated() {
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = now.toLocaleTimeString();
+        }
+
         function showNoData() {
-            const statsGrid = document.getElementById('statsGrid');
-            statsGrid.innerHTML = `
-                <div class="no-data" style="grid-column: 1 / -1;">
-                    <h3>No data available</h3>
-                    <p>Analytics will appear here once you start receiving customer feedback.</p>
+            document.body.innerHTML = `
+                <div style="text-align: center; padding: 50px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                    <h1 style="color: #e74c3c;">Error: Client ID Not Found</h1>
+                    <p style="color: #666;">Please ensure you are accessing this page with a valid client ID.</p>
                 </div>
             `;
         }
-        
-        function formatDate(dateString) {
-            if (!dateString) return 'Unknown';
-            const date = new Date(dateString);
-            return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        }
-        
-        function startRefreshTimer() {
+
+        function startAutoRefresh() {
             let timeLeft = 15 * 60; // 15 minutes in seconds
+            const refreshIntervalDisplay = document.getElementById('refreshIntervalDisplay');
             
             refreshInterval = setInterval(() => {
                 timeLeft--;
-                
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                document.getElementById('refreshTimer').textContent = 
-                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                if (refreshIntervalDisplay) {
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    refreshIntervalDisplay.textContent = `Auto-refresh in: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                }
                 
                 if (timeLeft <= 0) {
                     loadAnalyticsData();
@@ -589,7 +516,7 @@
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${businessName.replace(/\s+/g, '_')}_analytics_${new Date().toISOString().split('T')[0]}.csv`;
+            a.download = `analytics_${new Date().toISOString().split('T')[0]}.csv`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -599,8 +526,7 @@
         function generateCSV() {
             // This would generate CSV from the current data
             // For now, return a simple header
-            return `Business Name,Export Date,Total Reviews,Average Rating,Response Rate,Google Review Clicks
-${businessName},${new Date().toISOString()},0,0.0,0%,0`;
+            return `Business Name,Export Date,Total Reviews,Average Rating,Response Rate,Google Review Clicks\n`;
         }
         
         // Cleanup on page unload

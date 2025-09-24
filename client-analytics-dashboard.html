@@ -313,7 +313,7 @@
 
             try {
                 // Replace with your actual n8n webhook URL
-                const webhookUrl = `YOUR_N8N_WEBHOOK_URL/client-dashboard-data?clientId=${clientId}`;
+                const webhookUrl = `http://localhost:5678/webhook/client-analytics/{{ $parameter.clientId }}`;
 
                 const response = await fetch(webhookUrl);
                 if (!response.ok) {

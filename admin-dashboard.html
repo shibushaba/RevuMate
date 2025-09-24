@@ -535,7 +535,7 @@
         async function loadDashboardData() {
             try {
                 // Replace with your actual n8n webhook URL
-                const webhookUrl = 'YOUR_N8N_WEBHOOK_URL/admin-dashboard-data';
+                const webhookUrl = 'http://localhost:5678/webhook/admin-dashboard';
                 
                 const response = await fetch(webhookUrl);
                 if (!response.ok) {

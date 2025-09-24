@@ -293,7 +293,7 @@
             formStatus.style.color = 'black';
 
             // Replace with your actual n8n webhook URL
-            const webhookUrl = 'YOUR_N8N_WEBHOOK_URL/submit-feedback';
+            const webhookUrl = 'http://localhost:5678/webhook/client-feedback/{{ $parameter.clientId }}';
             
             try {
                 const response = await fetch(webhookUrl, {

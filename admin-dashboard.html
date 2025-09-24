@@ -401,6 +401,9 @@
     </style>
 </head>
 <body>
+    <script>
+        window.N8N_BASE_URL = window.N8N_BASE_URL || localStorage.getItem('N8N_BASE_URL') || 'http://localhost:5678';
+    </script>
 
     <header class="header">
         <div class="header-content">
@@ -485,7 +488,7 @@
             <div class="clients-header">
                 <h3>Clients Management</h3>
                 <div class="actions">
-                    <button class="btn add-client-btn">Add New Client</button>
+                    <button class="btn add-client-btn" onclick="openOnboarding()">Add New Client</button>
                     <button class="btn export-btn" onclick="exportClientData()">Export Data</button>
                 </div>
             </div>
@@ -535,19 +538,32 @@
         async function loadDashboardData() {
             try {
                 // Replace with your actual n8n webhook URL
-                const webhookUrl = 'http://localhost:5678/webhook/admin-dashboard';
+                const webhookUrl = `${window.N8N_BASE_URL}/webhook/admin-dashboard`;
                 
                 const response = await fetch(webhookUrl);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
-                
-                updateOverviewCards(data.overview);
-                updateHeaderStats(data.overview);
-                createRevenueReviewChart(data.trends);
+
+                updateOverviewCards({
+                    totalRevenue: data?.overview?.totalRevenue || 0,
+                    activeClients: data?.overview?.activeClients || 0,
+                    totalReviews: data?.overview?.totalReviews || 0,
+                    avgRating: data?.overview?.avgRating || 0
+                });
+                updateHeaderStats({
+                    totalClients: data?.overview?.totalClients || 0,
+                    totalReviews: data?.overview?.totalReviews || 0,
+                    monthlyRevenue: data?.overview?.monthlyRevenue || 0
+                });
+                createRevenueReviewChart({
+                    months: (data?.revenue?.monthly || []).map((_, i) => `M${i+1}`),
+                    reviews: (data?.trends?.reviews) || [],
+                    revenue: data?.revenue?.monthly || []
+                });
                 populateClientsTable(data.clients);
-                populateAlerts(data.alerts);
+                populateAlerts((data?.alerts || []).map(a => ({ message: a, timestamp: new Date().toLocaleString() })));
 
             } catch (error) {
                 console.error("Could not fetch dashboard data:", error);
@@ -682,6 +698,11 @@
         function exportClientData() {
             // Placeholder for data export functionality
             alert('Exporting data...');
+        }
+
+        function openOnboarding() {
+            // Route to the marketing site's onboarding form connected to n8n webhook
+            window.location.href = 'index.html#contact';
         }
         
         function formatDate(dateString) {

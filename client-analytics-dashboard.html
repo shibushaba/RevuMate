@@ -217,6 +217,9 @@
     </style>
 </head>
 <body>
+    <script>
+        window.N8N_BASE_URL = window.N8N_BASE_URL || localStorage.getItem('N8N_BASE_URL') || 'http://localhost:5678';
+    </script>
 
     <header class="header">
         <div class="header-content">
@@ -312,21 +315,51 @@
             }
 
             try {
-                // Replace with your actual n8n webhook URL
-                const webhookUrl = `http://localhost:5678/webhook/client-analytics/{{ $parameter.clientId }}`;
+                // Build URLs to n8n webhooks
+                const analyticsUrl = `${window.N8N_BASE_URL}/webhook/client-analytics/${encodeURIComponent(clientId)}`;
+                const clientDetailsUrl = `${window.N8N_BASE_URL}/webhook/client-details/${encodeURIComponent(clientId)}`;
 
-                const response = await fetch(webhookUrl);
+                // Fetch analytics
+                const response = await fetch(analyticsUrl);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
-                
-                // Update page elements with data
-                updateTitleAndHeader(data.businessName, data.brandColor);
-                updateStats(data.stats);
-                createRatingChart(data.ratingDistribution);
-                createTrendsChart(data.trends);
-                populateReviewsTable(data.reviews);
+
+                // Fetch client meta (businessName, brandColor) if available
+                try {
+                    const metaRes = await fetch(clientDetailsUrl);
+                    if (metaRes.ok) {
+                        const meta = await metaRes.json();
+                        updateTitleAndHeader(meta.businessName || 'Analytics Dashboard', meta.brandColor);
+                    } else {
+                        updateTitleAndHeader('Analytics Dashboard', undefined);
+                    }
+                } catch (_) {
+                    updateTitleAndHeader('Analytics Dashboard', undefined);
+                }
+
+                // Update page elements with analytics data (align with n8n schema)
+                updateStats({
+                    totalReviews: data?.stats?.totalReviews || 0,
+                    avgRating: data?.stats?.averageRating || 0,
+                    responseRate: data?.stats?.responseRate || 0,
+                    googleClicks: data?.stats?.googleReviewClicks || 0
+                });
+                createRatingChart(data?.charts?.ratingDistribution || [0,0,0,0,0]);
+                // Build trends object compatible with chart
+                createTrendsChart({
+                    months: (data?.charts?.monthlyTrends || []).map((_, i) => `M${i+1}`),
+                    totalReviews: data?.charts?.monthlyTrends || [],
+                    avgRating: []
+                });
+                populateReviewsTable((data?.recentReviews || []).map(r => ({
+                    rating: r.rating,
+                    customerName: r.customerName,
+                    source: 'Feedback Form',
+                    comment: r.feedback,
+                    timestamp: r.submissionTime
+                })));
                 updateLastUpdated();
 
             } catch (error) {

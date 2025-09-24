@@ -151,7 +151,7 @@
       "parameters": {
         "sendTo": "={{ $json.email }}",
         "subject": "How was your experience with {{ $('Read Active Clients').item.json.businessName }}?",
-        "message": "<!DOCTYPE html>\n<html>\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Share Your Experience</title>\n</head>\n<body style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f6f7f9; margin: 0; padding: 20px;\">\n    <div style=\"max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; padding: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);\">\n        <h1 style=\"color: #333; margin: 0 0 16px; font-size: 24px;\">Hi {{ $json.customerName }}!</h1>\n        \n        <p style=\"color: #666; font-size: 16px; line-height: 1.5; margin: 0 0 24px;\">Thank you for choosing {{ $('Read Active Clients').item.json.businessName }}. We'd love to hear about your recent experience!</p>\n        \n        <div style=\"text-align: center; margin: 32px 0;\">\n            <a href=\"https://shibushaba.github.io/RevuMate/client-feedback-form?clientId={{ $('Read Active Clients').item.json.clientId }}&customerName={{ encodeURIComponent($json.customerName) }}&customerEmail={{ encodeURIComponent($json.email) }}\" \n               style=\"background: {{ $('Read Active Clients').item.json.brandColor || '#4CAF50' }}; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; display: inline-block;\">Share Your Feedback</a>\n        </div>\n        \n        <p style=\"color: #888; font-size: 14px; text-align: center; margin: 24px 0 0;\">This takes less than 2 minutes and helps us serve you better.</p>\n        \n        <hr style=\"border: none; border-top: 1px solid #eee; margin: 24px 0;\">\n        \n        <p style=\"color: #999; font-size: 12px; text-align: center; margin: 0;\">{{ $('Read Active Clients').item.json.businessName }} | Powered by RevuMate</p>\n    </div>\n</body>\n</html>",
+        "message": "<!DOCTYPE html>\n<html>\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Share Your Experience</title>\n</head>\n<body style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f6f7f9; margin: 0; padding: 20px;\">\n    <div style=\"max-width: 600px; margin: 0 auto; background: white; border-radius: 12px; padding: 32px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);\">\n        <h1 style=\"color: #333; margin: 0 0 16px; font-size: 24px;\">Hi {{ $json.customerName }}!</h1>\n        \n        <p style=\"color: #666; font-size: 16px; line-height: 1.5; margin: 0 0 24px;\">Thank you for choosing {{ $('Read Active Clients').item.json.businessName }}. We'd love to hear about your recent experience!</p>\n        \n        <div style=\"text-align: center; margin: 32px 0;\">\n            <a href=\"https://shibushaba.github.io/RevuMate/client-feedback-form.html?clientId={{ $('Read Active Clients').item.json.clientId }}&customerName={{ encodeURIComponent($json.customerName) }}&customerEmail={{ encodeURIComponent($json.email) }}\" \n               style=\"background: {{ $('Read Active Clients').item.json.brandColor || '#4CAF50' }}; color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 16px; display: inline-block;\">Share Your Feedback</a>\n        </div>\n        \n        <p style=\"color: #888; font-size: 14px; text-align: center; margin: 24px 0 0;\">This takes less than 2 minutes and helps us serve you better.</p>\n        \n        <hr style=\"border: none; border-top: 1px solid #eee; margin: 24px 0;\">\n        \n        <p style=\"color: #999; font-size: 12px; text-align: center; margin: 0;\">{{ $('Read Active Clients').item.json.businessName }} | Powered by RevuMate</p>\n    </div>\n</body>\n</html>",
         "options": {}
       },
       "id": "84c00306-7739-44d6-b013-5cd40ea2cbd5",
@@ -223,6 +223,50 @@
         -272
       ],
       "webhookId": "af8e198c-2601-46fe-a890-f95ec31e6839"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "checkout/session",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "c0a5ef76-0f1c-4b96-8c6d-0a2b1c5d7e90",
+      "name": "Create Checkout Session Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        720
+      ],
+      "webhookId": "a9b0c1d2-e3f4-5a6b-7c8d-9e0f1a2b3c4d"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Placeholder: in production, call Stripe to create a Checkout Session and return the URL.\n// Returning a dummy URL for now.\nreturn [{ json: { url: 'https://checkout.stripe.com/pay/dummy-session' } }];"
+      },
+      "id": "d1e2f3a4-b5c6-4d7e-8f90-a1b2c3d4e5f6",
+      "name": "Mock Create Checkout Session",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -240,
+        720
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  json: {\n    success: true,\n    url: $json.url\n  }\n}"
+      },
+      "id": "e2f3a4b5-c6d7-4e8f-9a01-b2c3d4e5f6a7",
+      "name": "Respond Checkout URL",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        720
+      ]
     },
     {
       "parameters": {
@@ -475,7 +519,8 @@
             "3": "={{ $json.body.review }}",
             "4": "={{ $json.body.customerName }}",
             "5": "={{ $json.body.customerEmail }}",
-            "6": "={{ $json.body.timestamp }}"
+            "6": "={{ $json.body.timestamp }}",
+            "7": "={{ $json.body.nps }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -582,8 +627,75 @@
     },
     {
       "parameters": {
+        "jsCode": "const r = $json.body;\nconst isLow = Number(r.rating) <= 3;\nconst nps = Number(r.nps);\nlet npsType = 'passive';\nif (!isNaN(nps)) {\n  if (nps >= 9) npsType = 'promoter';\n  else if (nps <= 6) npsType = 'detractor';\n}\nreturn [{ json: { isLow, npsType, customerName: r.customerName, comment: r.comment, clientId: r.clientId, rating: r.rating } }];"
+      },
+      "id": "e1b9e2d0-3f4a-4e5c-b5aa-7d2c9b8f6c31",
+      "name": "Classify Feedback",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.isLow }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "id": "low-rating-cond"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "f7d1a9c2-5b8e-4c6d-9a3e-7b1d2c3e4f56",
+      "name": "Is Low Rating?",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [
+        176,
+        16
+      ]
+    },
+    {
+      "parameters": {
+        "channel": "#alerts",
+        "text": "⚠️ Low rating received ({{ $json.rating }}/5) from {{ $json.customerName }} for client {{ $json.clientId }}.\nComment: {{ $json.comment || 'N/A' }}",
+        "otherOptions": {}
+      },
+      "id": "a1f0cd3b-9b2a-4e95-8c3a-2f2b4c5d6e7f",
+      "name": "Slack Alert Low Rating",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [
+        384,
+        16
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "slack-cred-id-placeholder",
+          "name": "Slack Workspace"
+        }
+      }
+    },
+    {
+      "parameters": {
         "respondWith": "json",
-        "responseBody": "{\n  \"success\": true,\n  \"message\": \"Thank you for your feedback! {{ $json.body.rating >= 4 ? 'We really appreciate your positive review!' : 'We\\'ll use your feedback to improve our service.' }}\",\n  \"rating\": {{ $json.body.rating }},\n  \"showGoogleReview\": {{ $json.body.rating >= 4 ? 'true' : 'false' }}\n}",
+        "responseBody": "{\n  \"success\": true,\n  \"message\": \"Thank you for your feedback! {{ $json.body.rating >= 4 ? 'We really appreciate your positive review!' : 'We\\'ll use your feedback to improve our service.' }}\",\n  \"rating\": {{ $json.body.rating }},\n  \"nps\": {{ $json.body.nps || 'null' }},\n  \"showGoogleReview\": {{ $json.body.rating >= 4 ? 'true' : 'false' }}\n}",
         "options": {}
       },
       "id": "18416df4-b001-4ce9-ac39-e787f70fd64c",
@@ -682,6 +794,82 @@
     },
     {
       "parameters": {
+        "httpMethod": "GET",
+        "path": "client-details/{{ $parameter.clientId }}",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "b4a9a6f2-2f5c-4c3a-8c6a-1a2d7b0b7e21",
+      "name": "Client Details Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -432,
+        528
+      ],
+      "webhookId": "2c2c6c0e-7b2f-4f8f-9b2a-2a1c9f6d5a10"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Xap9YgZYdSSgl0fxx364SVikSGFLf5QN_pKCp5a7tVc",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1598782408,
+          "mode": "list",
+          "cachedResultName": "RevuMate_Clients",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Xap9YgZYdSSgl0fxx364SVikSGFLf5QN_pKCp5a7tVc/edit#gid=1598782408"
+        },
+        "options": {}
+      },
+      "id": "2b7ce4c1-0d54-4d1b-b0e9-0ac2c7b6d2df",
+      "name": "Read All Clients (Details)",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        -240,
+        528
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "QUAeKxQHxoSLdM4Z",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const clientId = $parameter.clientId;\nconst rows = $input.all().map(i => i.json);\nconst found = rows.find(r => String(r.clientId) === String(clientId));\nif (!found) {\n  return [{ json: { error: 'Client not found', clientId } }];\n}\nreturn [{ json: { clientId: found.clientId, businessName: found.businessName, brandColor: found.brandColor, googleBusinessUrl: found.googleBusinessUrl } }];"
+      },
+      "id": "c8d3e7a4-6e1b-4a65-9a8f-2f4d7b1c9e22",
+      "name": "Find Client By Id",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -32,
+        528
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "f0c4b0e9-2e5d-4a2b-a6a0-1b2c3d4e5f60",
+      "name": "Respond Client Details",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        176,
+        528
+      ]
+    },
+    {
+      "parameters": {
         "documentId": {
           "__rl": true,
           "value": "1Xap9YgZYdSSgl0fxx364SVikSGFLf5QN_pKCp5a7tVc",
@@ -742,6 +930,28 @@
   ],
   "pinData": {},
   "connections": {
+    "Create Checkout Session Webhook": {
+      "main": [
+        [
+          {
+            "node": "Mock Create Checkout Session",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mock Create Checkout Session": {
+      "main": [
+        [
+          {
+            "node": "Respond Checkout URL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Daily Review Request Schedule": {
       "main": [
         [
@@ -857,6 +1067,39 @@
         [
           {
             "node": "Respond Feedback Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond Feedback Success": {
+      "main": [
+        [
+          {
+            "node": "Classify Feedback",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify Feedback": {
+      "main": [
+        [
+          {
+            "node": "Is Low Rating?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is Low Rating?": {
+      "main": [
+        [
+          {
+            "node": "Slack Alert Low Rating",
             "type": "main",
             "index": 0
           }

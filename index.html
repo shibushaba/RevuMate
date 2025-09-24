@@ -703,6 +703,9 @@
     </style>
 </head>
 <body>
+    <script>
+        window.N8N_BASE_URL = window.N8N_BASE_URL || localStorage.getItem('N8N_BASE_URL') || 'http://localhost:5678';
+    </script>
     <!-- Navigation -->
     <nav id="navbar">
         <div class="nav-container">
@@ -896,7 +899,7 @@
         <div class="cta-content">
             <h2>Ready to Build Something Amazing Together?</h2>
             <p>Join forward-thinking founders and teams who are already using Revumate to create exceptional customer experiences from day one.</p>
-            <a href="https://wa.me/+919746788667" class="cta-white-button">Get Early Access</a>
+            <a href="#" onclick="startCheckout(event)" class="cta-white-button">Get Early Access</a>
         </div>
     </section>
 
@@ -936,11 +939,18 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 Revumate. All rights reserved. | Privacy Policy | Terms of Service</p>
+            <p>&copy; 2024 Revumate. All rights reserved. | <a href="privacy.html" style="color: inherit;">Privacy Policy</a> | <a href="terms.html" style="color: inherit;">Terms of Service</a></p>
         </div>
     </footer>
 
     <script>
+        function startCheckout(e){
+            e.preventDefault();
+            fetch(`${window.N8N_BASE_URL}/webhook/checkout/session`, { method: 'POST' })
+                .then(r => r.json())
+                .then(d => { if (d.url) { window.location.href = d.url; } })
+                .catch(() => alert('Unable to start checkout. Please try again.'));
+        }
         // Navbar scroll effect
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');

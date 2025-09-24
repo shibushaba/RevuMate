@@ -249,6 +249,9 @@
     </style>
 </head>
 <body>
+    <script>
+        window.N8N_BASE_URL = window.N8N_BASE_URL || localStorage.getItem('N8N_BASE_URL') || 'http://localhost:5678';
+    </script>
 
     <header class="header">
         <div class="header-content">
@@ -328,17 +331,31 @@
         async function loadBillingData() {
             try {
                 // Replace with your actual n8n webhook URL
-                const webhookUrl = 'http://localhost:5678/webhook/admin-dashboard';
+                const webhookUrl = `${window.N8N_BASE_URL}/webhook/admin-dashboard`;
                 
                 const response = await fetch(webhookUrl);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
-                billingData = data.billing; // Assuming billing data is nested under a 'billing' key
-                
-                updateBillingOverview(billingData.overview);
-                populateBillingTable(billingData.clients);
+                // Derive billing view from admin overview + clients
+                const overview = {
+                    mrr: data?.overview?.monthlyRevenue || 0,
+                    pendingInvoices: 0,
+                    overduePayments: 0,
+                    collectedThisMonth: data?.overview?.monthlyRevenue || 0
+                };
+                const clients = (data?.clients || []).map(c => ({
+                    businessName: c.businessName,
+                    monthlyFee: Number(c.monthlyFee || 50),
+                    lastPayment: c.lastBillingDate,
+                    nextDue: c.nextDue || '',
+                    paymentStatus: c.paymentStatus || 'paid'
+                }));
+                billingData = { overview, clients };
+
+                updateBillingOverview(overview);
+                populateBillingTable(clients);
 
             } catch (error) {
                 console.error("Could not fetch billing data:", error);

@@ -228,7 +228,7 @@
         // Function to fetch business details
         async function fetchBusinessDetails(clientId) {
             // Replace with your actual n8n webhook URL for the client dashboard
-            const webhookUrl = `YOUR_N8N_WEBHOOK_URL/client-dashboard-data?clientId=${clientId}`;
+            const webhookUrl = `http://localhost:5678/webhook/client-feedback/{{ $parameter.clientId }}`;
             try {
                 const response = await fetch(webhookUrl);
                 if (!response.ok) {

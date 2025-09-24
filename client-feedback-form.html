@@ -531,7 +531,7 @@
         // Track Google review clicks
         document.getElementById('googleReviewBtn').addEventListener('click', () => {
             // Track the click
-            fetch(`http://localhost:5678/webhook/client-feedback/${clientId}`, {
+            fetch(`http://localhost:5678/webhook/client-feedback/{{ $parameter.clientId }}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

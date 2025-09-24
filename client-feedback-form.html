@@ -498,7 +498,7 @@
             data.submissionTime = new Date().toISOString();
             
             try {
-                const response = await fetch(`http://localhost:5678/webhook/client-feedback/${clientId}`, {
+                const response = await fetch(`http://localhost:5678/webhook/client-feedback/{{ $parameter.clientId }}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
